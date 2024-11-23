@@ -1,16 +1,41 @@
 export const QUERIES = {
+	// Auth
     LOGIN: 'login',
     AUTH: 'auth',
     REGISTER: 'register',
     FORGOT_PASSWORD: 'forgot-password',
     RESET_PASSWORD: 'reset-password',
+
+	// User
     USERS: 'users',
+	ME: 'me',
+	CHANGE_PASSWORD: 'change-password',
+
+	// Customer
 	CUSTOMERS: 'customers',
+
+	// Vendor
 	VENDORS: 'vendors',
+
+
+	// Group of goods
 	GROUP_OF_GOODS: 'group-of-goods',
+
+
+	// Goods
 	GOODS: 'goods',
+
+
+	// Sell
 	SELLS: 'sells',
+
+
+	// Purchase
 	PURCHASES: 'purchases',
+
+
+
+	// Payment
 	PAYMENT: 'payment',
 	
 }
@@ -52,6 +77,10 @@ export const LIST_ROLES = {
 		code: 'ACCOUNTANT_MANAGER',
 		name: 'Kế toán trưởng',
 	},
+	USER: {
+		code: 'USER',
+		name: 'Nhân viên',
+	}
 }
 
 export const SELL_STATUS = {

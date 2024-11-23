@@ -3,9 +3,11 @@ export const URL_LOGIN = 'auth/login';
 
 
 
+
 // Users
 export const URL_GET_USERS = 'user';
-
+export const URL_ME = URL_GET_USERS + '/me';
+export const URL_CHANGE_PASSWORD = URL_ME + '/changePassword';
 
 
 
