@@ -11,10 +11,10 @@ export const Route = createLazyFileRoute('/_app/goods/')({
 
 
 function GoodsPage() {
-    const { mutate, data } = useGetGoods()
+    const { mutateAsync, data } = useGetGoods()
 
-    const queryAllTypes = (req?: IPaginationAndSearch<IGoodsWhere>) => {
-        mutate({ ...req, });
+    const queryAllTypes = async (req?: IPaginationAndSearch<IGoodsWhere>) => {
+        await mutateAsync({ ...req, });
     }
 
     return (

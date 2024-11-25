@@ -12,7 +12,7 @@ export interface IVendorRequest {
 	where?: IVendorWhere;
 	include?: Prisma.NhaCungCapInclude | Prisma.NhaCungCapInclude[];
 	orderBy?: Prisma.NhaCungCapOrderByWithRelationInput | Prisma.NhaCungCapOrderByWithRelationInput[] | unknown;
-	data?: IVendorInput;
+	data?: IVendorInput | Prisma.NhaCungCapUpdateInput;
 }
 
 export interface IVendorWhere extends Prisma.NhaCungCapWhereInput {}

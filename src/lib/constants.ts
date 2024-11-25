@@ -16,6 +16,9 @@ export const QUERIES = {
 
 	// Vendor
 	VENDORS: 'vendors',
+	CREATE_VENDOR: 'create-vendor',
+	GET_VENDOR: 'get_vendor',
+	UPDATE_VENDOR: 'update-vendor',
 
 
 	// Group of goods

@@ -1,6 +1,8 @@
+import ConfirmDeleteVendor from "@/components/modal/vendor/delete"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { IVendorResponse } from "@/types/vendor"
+import { Link } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVertical } from "lucide-react"
 
@@ -107,7 +109,6 @@ export const VendorColumns: ColumnDef<IVendorResponse>[] = [
         header: '',
         cell: ({ row }) => {
             const item = row.original
-            console.log(item)
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild className="bg-transparent">
@@ -121,8 +122,14 @@ export const VendorColumns: ColumnDef<IVendorResponse>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="text-blue-600">Câp nhật</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">Xoá</DropdownMenuItem>
+                        <Link to="/vendor/$vendorId" params={{ vendorId: item.maNhaCungCap }}>
+                            <DropdownMenuItem className="text-blue-600">
+                                Cập nhật
+                            </DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuItem asChild className="text-red-600">
+                            <ConfirmDeleteVendor vendor={item} />
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

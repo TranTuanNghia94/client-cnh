@@ -20,7 +20,9 @@ export const URL_GET_CUSTOMERS = 'khachhang';
 
 // Vendor
 export const URL_GET_VENDORS = 'nhacungcap';
-
+export const URL_CREATE_VENDOR = URL_GET_VENDORS + '/createOne';
+export const URL_UPDATE_VENDOR = URL_GET_VENDORS + '/updateOne';
+export const URL_DELETE_VENDOR = URL_GET_VENDORS + '/deleteOne';
 
 
 

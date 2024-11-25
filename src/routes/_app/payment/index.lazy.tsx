@@ -10,11 +10,11 @@ export const Route = createLazyFileRoute('/_app/payment/')({
 })
 
 function PaymentPage() {
-  const { mutate, data } = useGetPayments()
+  const { mutateAsync, data } = useGetPayments()
 
 
-  const queryAllTypes = (req?: IPaginationAndSearch<IPaymentWhere>) => {
-    mutate({ ...req, });
+  const queryAllTypes = async (req?: IPaginationAndSearch<IPaymentWhere>) => {
+    await mutateAsync({ ...req, });
   }
 
   return (

@@ -10,11 +10,11 @@ export const Route = createLazyFileRoute('/_app/user/')({
 })
 
 function UserPage() {
-  const { mutate, data } = useGetUsers()
+  const { mutateAsync, data } = useGetUsers()
 
 
-  const queryAllUsers = (req?: IPaginationAndSearch<IUserWhere>) => {
-    mutate({ ...req, });
+  const queryAllUsers = async (req?: IPaginationAndSearch<IUserWhere>) => {
+    await mutateAsync({ ...req, });
   };
 
 

@@ -50,3 +50,42 @@ export interface IAddressResponse {
 	updatedAt?: Date;
 	deletedAt?: Date;
 }
+
+
+export interface IQueryCustomerAddress extends Prisma.KhachHangDiaChiLienHeSelect{}
+
+
+export interface ICustomerAddressWhere extends Prisma.KhachHangDiaChiLienHeWhereInput{}
+
+
+export interface ICustomerAddressInput extends Prisma.KhachHangDiaChiLienHeCreateInput{}
+
+
+export interface ICustomerAddressRequest {
+	select?: IQueryCustomerAddress;
+	where?: ICustomerAddressWhere;
+	take?: number;
+	skip?: number;
+	include?: IQueryCustomerAddress;
+	orderBy?: Prisma.KhachHangOrderByWithAggregationInput | Prisma.KhachHangOrderByWithAggregationInput[],
+	data?: ICustomerAddressInput;
+}
+
+export interface ICustomerAddressResponse {
+	metadata?: object;
+	version?: number;
+	id?: string;
+	tenNguoiLienHe?: string;
+	soDienThoai?: string;
+	email?: string;
+	soNhaTenDuong_1?: string;
+	soNhaTenDuong_2?: string;
+	phuongXa?: string;
+	quanHuyen?: string;
+	tinhThanh?: string;
+	maKhachHang?: string;
+	isActive?: boolean;
+	createdAt?: Date;
+	updatedAt?: Date;
+	deletedAt?: Date;
+}

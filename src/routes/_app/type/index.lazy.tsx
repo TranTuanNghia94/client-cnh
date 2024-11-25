@@ -11,10 +11,10 @@ export const Route = createLazyFileRoute('/_app/type/')({
 
 
 function TypePage() {
-    const { mutate, data } = useGetTypes()
+    const { mutateAsync, data } = useGetTypes()
 
-    const queryAllTypes = (req?: IPaginationAndSearch<IGroupOfGoodsWhere>) => {
-        mutate({ ...req, });
+    const queryAllTypes = async (req?: IPaginationAndSearch<IGroupOfGoodsWhere>) => {
+        await mutateAsync({ ...req, });
     }
 
     return (

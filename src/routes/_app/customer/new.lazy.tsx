@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { ICustomerAddressInput } from '@/types/customer'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import React from 'react'
 
@@ -12,17 +13,17 @@ export const Route = createLazyFileRoute('/_app/customer/new')({
 })
 
 function NewCustomerPage() {
-  const [totalAddress, setTotalAddress] = React.useState<number[]>([])
+  const [totalAddress, setTotalAddress] = React.useState<ICustomerAddressInput[]>([])
 
   const addAddress = () => {
-    setTotalAddress([...totalAddress, 1])
+    setTotalAddress([...totalAddress, {
+      tenNguoiLienHe: '',
+      soDienThoai: '',
+    }])
   }
 
-  console.log(totalAddress)
-
   const deleteAddress = (index: number) => {
-    const copy = totalAddress.filter((_, i) => i !== index)
-    setTotalAddress(copy)
+    setTotalAddress((prev) => prev.filter((_, i) => i !== index))
   }
 
   return (
