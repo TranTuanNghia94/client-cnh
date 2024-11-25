@@ -30,7 +30,9 @@ export const URL_DELETE_VENDOR = URL_GET_VENDORS + '/deleteOne';
 
 // Group of goods
 export const URL_GET_GROUP_OF_GOODS = 'hangHoa/cat';
-
+export const URL_CREATE_GROUP_OF_GOODS = URL_GET_GROUP_OF_GOODS + '/createOne';
+export const URL_UPDATE_GROUP_OF_GOODS = URL_GET_GROUP_OF_GOODS + '/updateOne';
+export const URL_DELETE_GROUP_OF_GOODS = URL_GET_GROUP_OF_GOODS + '/deleteOne';
 
 
 
@@ -38,6 +40,9 @@ export const URL_GET_GROUP_OF_GOODS = 'hangHoa/cat';
 
 // Goods
 export const URL_GET_GOODS = 'hanghoa';
+export const URL_CREATE_GOODS = URL_GET_GOODS + '/createOne';
+export const URL_UPDATE_GOODS = URL_GET_GOODS + '/updateOne';
+export const URL_DELETE_GOODS = URL_GET_GOODS + '/deleteOne';
 
 
 

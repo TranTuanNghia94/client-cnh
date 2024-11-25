@@ -22,30 +22,26 @@ import {
 } from "@/components/ui/table"
 import { Button } from "../ui/button"
 import React, { useEffect } from "react"
-// import { Input } from "../ui/input"
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from "../ui/dropdown-menu"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { ChevronDown } from "lucide-react"
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink } from "../ui/pagination"
 import { IPaginationAndSearch } from "@/types/api"
-import { Separator } from "../ui/separator"
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group"
+
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[],
     total?: number,
-    title?: string,
-    fetchData: (req: IPaginationAndSearch<unknown>) => void
-    listTools?: React.ReactNode
+    fetchData: (req: IPaginationAndSearch<unknown>) => void,
+    selectedFunct?: (item: TData) => void,
 }
 
 
-export function DataTable<TData, TValue>({
+export function DataTableModal<TData, TValue>({
     columns,
     data,
-    title,
     fetchData,
-    listTools,
+    selectedFunct,
     total = 0
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
@@ -53,15 +49,18 @@ export function DataTable<TData, TValue>({
         []
     )
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-
+    const [selected, setSelected] = React.useState<TData>();
     const [pagination, setPagination] = React.useState<PaginationState>({
         pageIndex: 0,
         pageSize: 10,
     })
 
-    useEffect(() => {
-        console.log("pagination", pagination)
+    const handleSelect = (item: TData) => {
+        setSelected(item);
+        selectedFunct?.(item);
+    };
 
+    useEffect(() => {
         fetchData({
             take: pagination.pageSize,
             skip: (pagination.pageIndex * pagination.pageSize)
@@ -90,54 +89,6 @@ export function DataTable<TData, TValue>({
 
     return (
         <div>
-            <div className="flex justify-between item-center">
-                <div className="font-bold text-center">{title}</div>
-
-                <div>
-                    <div className="flex gap-x-2">
-                        {/* <Input
-                            placeholder="Filter emails..."
-                            value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-                            onChange={(event) =>
-                                table.getColumn("email")?.setFilterValue(event.target.value)
-                            }
-                            className="max-w-sm"
-                        /> */}
-                        {listTools}
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button size="sm" variant="outline" className="ml-auto">
-                                    Columns <ChevronDown size={18} />
-                                </Button>
-
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                                {table
-                                    .getAllColumns()
-                                    .filter(
-                                        (column) => column.getCanHide()
-                                    )
-                                    .map((column) => {
-                                        return (
-                                            <DropdownMenuCheckboxItem
-                                                key={column.id}
-                                                className="capitalize"
-                                                checked={column.getIsVisible()}
-                                                onCheckedChange={(value) =>
-                                                    column.toggleVisibility(!!value)
-                                                }
-                                            >
-                                                {column.id}
-                                            </DropdownMenuCheckboxItem>
-                                        )
-                                    })}
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
-                </div>
-            </div>
-            
-            <Separator className="my-2 bg-secondary-foreground" />
 
             <div>
                 <Table>
@@ -171,6 +122,14 @@ export function DataTable<TData, TValue>({
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
+
+                                    <TableCell>
+                                        <RadioGroup
+                                            onClick={() => handleSelect(row.original)}
+                                        >
+                                            <RadioGroupItem checked={selected === row.original} value={(row.original as { code: string })?.code || ""} />
+                                        </RadioGroup>
+                                    </TableCell>
                                 </TableRow>
                             ))
                         ) : (
@@ -182,6 +141,7 @@ export function DataTable<TData, TValue>({
                         )}
                     </TableBody>
                 </Table>
+
             </div>
 
 
@@ -254,6 +214,6 @@ export function DataTable<TData, TValue>({
                     </Pagination>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }

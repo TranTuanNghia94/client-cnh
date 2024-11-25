@@ -19,7 +19,7 @@ const HeaderPageLayout = ({ title, idForm }: HeaderPageLayoutProps) => {
             <div className="flex gap-x-4">
                 <Button type="submit" form={idForm} size="sm">Lưu</Button>
                 <Separator orientation="vertical" className="h-7 bg-primary" />
-                <Button size="sm" variant="secondary" onClick={() => history.go(-1)}>Thoát</Button>
+                <Button type="button" size="sm" variant="secondary" onClick={() => history.go(-1)}>Thoát</Button>
             </div>
         </div>
     )

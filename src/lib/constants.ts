@@ -23,10 +23,16 @@ export const QUERIES = {
 
 	// Group of goods
 	GROUP_OF_GOODS: 'group-of-goods',
+	CREATE_GROUP_OF_GOODS: 'create-group-of-goods',
+	GET_GROUP_OF_GOODS: 'get-group-of-goods',
+	UPDATE_GROUP_OF_GOODS: 'update-group-of-goods',
 
 
 	// Goods
 	GOODS: 'goods',
+	CREATE_GOODS: 'create-goods',
+	GET_GOODS: 'get-goods',
+	UPDATE_GOODS: 'update-goods',
 
 
 	// Sell

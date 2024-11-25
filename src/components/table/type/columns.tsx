@@ -1,6 +1,8 @@
+import ConfirmDeleteType from "@/components/modal/type/delete"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { IGroupOfGoodsResponse } from "@/types/type"
+import { Link } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVertical } from "lucide-react"
 
@@ -10,9 +12,9 @@ export const TypeColumns: ColumnDef<IGroupOfGoodsResponse>[] = [
         id: 'No.',
         header: 'No.',
         accessorKey: 'stt',
-        cell: (a) =>{
+        cell: (a) => {
             const numb = (a.row.index + 1) + (a.table.getState().pagination.pageIndex * (a.table.getState().pagination.pageSize))
-            return  <div className="text-xs">{numb}</div>
+            return <div className="text-xs">{numb}</div>
         }
 
     },
@@ -44,7 +46,7 @@ export const TypeColumns: ColumnDef<IGroupOfGoodsResponse>[] = [
                     variant="outline"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                   Đơn vị
+                    Đơn vị
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             )
@@ -70,8 +72,12 @@ export const TypeColumns: ColumnDef<IGroupOfGoodsResponse>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="text-blue-600">Câp nhật</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">Xoá</DropdownMenuItem>
+                        <Link to="/type/$typeId" params={{ typeId: item.id }}>
+                            <DropdownMenuItem className="text-blue-600">Cập nhật</DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuItem asChild className="text-red-600">
+                            <ConfirmDeleteType type={item} />
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
