@@ -37,6 +37,7 @@ export const QUERIES = {
 
 	// Sell
 	SELLS: 'sells',
+	ADD_SELL_DETAIL: 'add-sell-detail',
 
 
 	// Purchase

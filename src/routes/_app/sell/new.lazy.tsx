@@ -1,10 +1,14 @@
 import HeaderPageLayout from '@/components/layout/HeaderPage'
 import SellDetail from '@/components/modal/sell/sell-detail'
+import { DataTableDetail } from '@/components/table/data-table-detail'
+import { SellDetailColumns } from '@/components/table/sell/columns-sell-detail'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { QUERIES } from '@/lib/constants'
 import { ISellDetailInput } from '@/types/sell'
+import { useQueryClient } from '@tanstack/react-query'
 import { createLazyFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 
@@ -15,9 +19,14 @@ export const Route = createLazyFileRoute('/_app/sell/new')({
 
 function NewSellPage() {
     const [listDetail, setListDetail] = useState<ISellDetailInput[]>([])
+    const queryClient = useQueryClient()
 
     const handleAddDetail = (data: ISellDetailInput) => {
         setListDetail([...listDetail, data])
+
+        queryClient.setQueryData([QUERIES.ADD_SELL_DETAIL], (old: ISellDetailInput[]) => {
+            return [...old, data]
+        })
     }
 
     return (
@@ -103,31 +112,10 @@ function NewSellPage() {
 
                 <div className="col-span-3">
                     <Card className="mt-4">
-                        <CardHeader>
-                            <div className="flex justify-between">
-                                <CardTitle>Chi tiết đơn hàng</CardTitle>
-                                <div>
-                                    <SellDetail addDetail={handleAddDetail} />
-                                </div>
-                            </div>
-                        </CardHeader>
-                    </Card>
-
-                    <Card className="mt-4">
                         <CardContent>
-                            {
-                                listDetail.map((item, index) => (
-                                    <div key={index} className="flex gap-x-4 justify-between">
-                                        <div>{item?.HangHoa?.connect?.maHangHoa}</div>
-                                        <div className="my-2">{item.cust_vendorCode}</div>
-                                        <div className="my-2">{item.soLuong}</div>
-                                        <div className="my-2">{item.donGia}</div>
-                                        <div className="my-2">{item.donViTinh}</div>
-                                        <div>{item.thanhTien}</div>
-                                        <div>{item.daBaoGomThue}</div>
-                                    </div>
-                                ))
-                            }
+                            <div className="mt-4">
+                                <DataTableDetail listTools={<SellDetail addDetail={handleAddDetail} />} data={listDetail as unknown as ISellDetailInput[]} columns={SellDetailColumns} />
+                            </div>
                         </CardContent>
                     </Card>
                 </div>

@@ -43,18 +43,7 @@ export const ModalGoodsColumns: ColumnDef<IGoodsResponse>[] = [
     {
         id: 'Tên hàng',
         accessorKey: 'tenHang',
-        header: ({ column }) => {
-            return (
-                <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Tên hàng
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        header: 'Tên hàng',
         cell: ({ row }) => <div className="text-xs">{row.original.tenHang}</div>,
     },
 ]

@@ -5,7 +5,6 @@ import { ISellRequest, ISellWhere } from "@/types/sell"
 import { useMutation } from "@tanstack/react-query"
 import { useToast } from "./use-toast"
 
-
 export const useGetSells = () => {
     const { toast } = useToast()
 
@@ -13,7 +12,7 @@ export const useGetSells = () => {
         mutationKey: [QUERIES.SELLS],
         mutationFn: async (payload?: IPaginationAndSearch<ISellWhere, unknown>) => {
             const request: ISellRequest = {
-                include:{
+                include: {
                     CreatedBy: true,
                     KhachHang: true
                 },

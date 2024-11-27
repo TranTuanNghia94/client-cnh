@@ -22,6 +22,11 @@ const SellDetail = ({ addDetail }: Props) => {
     }
 
 
+    const clearForm = () => {
+        setGoodsSelected(undefined)
+    }
+
+
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
@@ -34,12 +39,12 @@ const SellDetail = ({ addDetail }: Props) => {
             data["thanhTien"] = `${Number(data["donGia"]) * Number(data["soLuong"])}`
         }
 
-
         const formatData: ISellDetailInput = {
             ...data,
             soLuong: Number(data["soLuong"]),
             donGia: Number(data["donGia"]),
             thanhTien: Number(data["thanhTien"]),
+            daBaoGomThue: data["daBaoGomThue"] === "0" ? false : true,
             cust_maHangHoa: goodsSelected.maHangHoa,
             cust_tenHangHoa: goodsSelected.tenHang,
             HangHoa: {
@@ -51,13 +56,14 @@ const SellDetail = ({ addDetail }: Props) => {
 
         addDetail(formatData)
         setOpen(false)
+        clearForm()
     }
 
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline">Thêm chi tiết đơn hàng</Button>
+                <Button variant="default">Thêm chi tiết đơn hàng</Button>
             </DialogTrigger>
             <DialogContent className="max-w-[90%]" onInteractOutside={(e) => { e.preventDefault() }}>
                 <DialogHeader>
@@ -65,9 +71,8 @@ const SellDetail = ({ addDetail }: Props) => {
                         <DialogTitle className="uppercase">Thêm chi tiết đơn hàng</DialogTitle>
 
                         <div className="flex gap-x-4">
-                            {/* <DialogTrigger itemType="submit" type="submit" form="createSellDetailForm" disabled={!goodsSelected} className="h-8 bg-primary-foreground px-3 text-xs">Lưu</DialogTrigger> */}
                             <Button size="sm" type="submit" form="createSellDetailForm">Lưu</Button>
-                            <DialogClose onClick={() => setGoodsSelected(undefined)} className="h-8 bg-primary-foreground rounded-md px-3 text-xs">Đóng</DialogClose>
+                            <DialogClose onClick={clearForm} className="h-8 bg-primary-foreground rounded-md px-3 text-xs">Đóng</DialogClose>
                         </div>
                     </div>
                 </DialogHeader>
@@ -130,13 +135,9 @@ const SellDetail = ({ addDetail }: Props) => {
 
                             <div>
                                 <Label htmlFor="donGia">Đơn giá <span className="text-red-600">*</span></Label>
-                                <Input required maxLength={50} name="donGia" />
+                                <Input required maxLength={100} name="donGia"  />
                             </div>
 
-                            <div>
-                                <Label htmlFor="thanhTien">Thành tiền <span className="text-red-600">*</span></Label>
-                                <Input disabled name="thanhTien" />
-                            </div>
                         </div>
                     </div>
 
