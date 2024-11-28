@@ -113,7 +113,7 @@ export function DataTableDetail<TData, TValue>({
                                 {table.getHeaderGroups().map((headerGroup) => (
                                     headerGroup.headers.map((header) => {
                                         return header.column.getCanFilter() && (
-                                            <Input placeholder={header.column.columnDef.header as string}
+                                            <Input key={header.id} placeholder={header.column.columnDef.header as string}
                                                 value={(table.getColumn(header.id)?.getFilterValue() as string) ?? ""}
                                                 onChange={(event) =>
                                                     table.getColumn(header.id)?.setFilterValue(event.target.value)

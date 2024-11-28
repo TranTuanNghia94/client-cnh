@@ -1,34 +1,41 @@
 import HeaderPageLayout from '@/components/layout/HeaderPage'
-import { Button } from '@/components/ui/button'
+import CreateCustomerAddress from '@/components/modal/customer/customer-address-create'
+import { CustomerAddressColumns } from '@/components/table/customer/column-customer-address'
+import { DataTableDetail } from '@/components/table/data-table-detail'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { ICustomerAddressInput } from '@/types/customer'
 import { createLazyFileRoute } from '@tanstack/react-router'
-import React from 'react'
+import React, { useState } from 'react'
 
 export const Route = createLazyFileRoute('/_app/customer/new')({
   component: NewCustomerPage
 })
 
 function NewCustomerPage() {
-  const [totalAddress, setTotalAddress] = React.useState<ICustomerAddressInput[]>([])
+  const [listAddress, setListAddress] = useState<ICustomerAddressInput[]>([])
 
-  const addAddress = () => {
-    setTotalAddress([...totalAddress, {
-      tenNguoiLienHe: '',
-      soDienThoai: '',
-    }])
+  const handleAddCustomerAddress = (data: ICustomerAddressInput) => {
+    setListAddress([...listAddress, data])
   }
 
-  const deleteAddress = (index: number) => {
-    setTotalAddress((prev) => prev.filter((_, i) => i !== index))
-  }
+  const handleDeleteCustomerAddress = (index: number) => {
+    const newList = [...listAddress]
+    newList.splice(index, 1)
+    setListAddress(newList)
+}
+
+const handleUpdateCustomerAddress = (index: number, data: ICustomerAddressInput) => {
+    const newList = [...listAddress]
+    newList[index] = data
+    setListAddress(newList)
+}
 
   return (
     <div>
-      <HeaderPageLayout title="Thêm khách hàng" />
+      <HeaderPageLayout title="Thêm khách hàng" idForm="formCreateCustomer" />
 
       <div className="grid grid-cols-3 gap-x-4">
         <Card className="mt-4">
@@ -36,9 +43,9 @@ function NewCustomerPage() {
             <CardTitle className="uppercase">Thông tin chung</CardTitle>
           </CardHeader>
           <CardContent>
-            <form>
+            <form id="formCreateCustomer">
               <div className="grid grid-cols-3 mt-4">
-                <Label className="text-xs" htmlFor="maKhachHang">Mã khách hàng <span>*</span></Label>
+                <Label className="text-xs" htmlFor="maKhachHang">Mã khách hàng <span className="text-red-600">*</span></Label>
                 <Input name="maKhachHang" required className="col-span-2" />
               </div>
 
@@ -56,47 +63,22 @@ function NewCustomerPage() {
         </Card>
 
 
-        <div className="mt-4 col-span-2">
+        <div className="col-span-2 mt-4">
           <Card>
-            <CardContent className="p-4 flex justify-between items-center">
-              <CardTitle className="uppercase">Địa chỉ khách hàng</CardTitle>
-              <Button size="sm" variant="secondary" onClick={addAddress}>Thêm địa chỉ</Button>
+            <CardContent>
+              <div className="mt-4">
+                <DataTableDetail listTools={<CreateCustomerAddress saveDetail={handleAddCustomerAddress} />}
+                   data={listAddress.map((item, index) => ({
+                    ...item,
+                    deleteRow: () => handleDeleteCustomerAddress(index),
+                    updateRow: (val: ICustomerAddressInput) => handleUpdateCustomerAddress(index, val)
+                }))}
+
+                columns={CustomerAddressColumns}
+                />
+              </div>
             </CardContent>
           </Card>
-
-
-          {
-            totalAddress.map((_, index) => {
-              return (
-                <Card key={index} className="my-2">
-                  <CardContent className="p-4">
-                    <div className="text-right"><Button variant="destructive" onClick={() => deleteAddress(index)} size="sm">Xoá</Button></div>
-                    <div className="grid grid-cols-2 gap-x-10 gap-y-5">
-                      <div>
-                        <Label className="text-xs" htmlFor="tenNguoiLienHe">Người liên hệ <span>*</span></Label>
-                        <Input name="tenNguoiLienHe" className="col-span-2" />
-                      </div>
-
-                      <div>
-                        <Label className="text-xs" htmlFor="soDienThoai">SĐT</Label>
-                        <Input name="soDienThoai" className="col-span-2" />
-                      </div>
-
-                      <div>
-                        <Label className="text-xs" htmlFor="email">Email</Label>
-                        <Input name="email" className="col-span-2" />
-                      </div>
-
-                      <div>
-                        <Label className="text-xs" htmlFor="soNhaTenDuong_1">Đia chỉ</Label>
-                        <Textarea name="soNhaTenDuong_1" className="col-span-2" />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-            })
-          }
         </div>
       </div>
     </div>

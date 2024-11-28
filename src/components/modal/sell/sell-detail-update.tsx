@@ -11,11 +11,29 @@ import { ISellDetailInput } from '@/types/sell';
 
 type Props = {
     saveDetail: (data: ISellDetailInput) => void
+    data: ISellDetailInput;
 }
 
-const SellDetail = ({ saveDetail }: Props) => {
-    const [goodsSelected, setGoodsSelected] = React.useState<IGoodsResponse>();
+const SellDetailUpdate = ({ saveDetail, data }: Props) => {
+    const [goodsSelected, setGoodsSelected] = React.useState<IGoodsResponse | undefined>({
+        maHangHoa: data.cust_maHangHoa as string,
+        tenHang: data.cust_tenHangHoa as string,
+        id: data.HangHoa?.connect?.id as string
+    });
     const [open, setOpen] = React.useState(false);
+
+    const [formValues, setFormValues] = React.useState<ISellDetailInput>({
+        soLuong: data?.soLuong,
+        donViTinh: data?.donViTinh,
+        daBaoGomThue: data?.daBaoGomThue,
+        donGia: data?.donGia,
+        thanhTien: data?.thanhTien,
+        giaoVien: data?.giaoVien,
+        dept_room: data?.dept_room,
+        ghiChu: data?.ghiChu as string[],
+        cust_vendorCode: data.cust_vendorCode as string,
+    });
+
 
     const handleSelectGoods = (data: IGoodsResponse) => {
         setGoodsSelected(data)
@@ -27,29 +45,30 @@ const SellDetail = ({ saveDetail }: Props) => {
     }
 
 
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        event.preventDefault()
+
+        setFormValues((prevValues) => ({
+            ...prevValues,
+            [event.target.name]: event.target.value,
+        }));
+    };
+
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         if (!goodsSelected) return
 
-        const formData = new FormData(e.currentTarget)
-        const data = Object.fromEntries(formData)
-
-        if (data && data?.["donGia"] && data?.["soLuong"]) {
-            data["thanhTien"] = `${Number(data["donGia"]) * Number(data["soLuong"])}`
-        }
-
         const formatData: ISellDetailInput = {
-            ...data,
-            soLuong: Number(data["soLuong"]),
-            donGia: Number(data["donGia"]),
-            thanhTien: Number(data["thanhTien"]),
-            daBaoGomThue: data["daBaoGomThue"] === "0" ? false : true,
+            ...formValues,
+            donGia: Number(formValues.donGia),
+            soLuong: Number(formValues.soLuong),
+            thanhTien: Number(formValues.donGia) * Number(formValues.soLuong),
             cust_maHangHoa: goodsSelected.maHangHoa,
             cust_tenHangHoa: goodsSelected.tenHang,
             HangHoa: {
                 connect: {
-                    id: goodsSelected.id,
+                    id: goodsSelected.id
                 }
             }
         }
@@ -63,12 +82,14 @@ const SellDetail = ({ saveDetail }: Props) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button variant="default">Thêm chi tiết đơn hàng</Button>
+                <div className="relative flex cursor-default select-none hover:bg-gray-100 items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 text-blue-600">
+                    Cập nhật
+                </div>
             </DialogTrigger>
             <DialogContent className="max-w-[90%]" onInteractOutside={(e) => { e.preventDefault() }}>
                 <DialogHeader>
                     <div className="flex items-center justify-between">
-                        <DialogTitle className="uppercase">Thêm chi tiết đơn hàng</DialogTitle>
+                        <DialogTitle className="uppercase">Cập nhật chi tiết đơn hàng</DialogTitle>
 
                         <div className="flex gap-x-4">
                             <Button size="sm" type="submit" form="createSellDetailForm">Lưu</Button>
@@ -107,22 +128,22 @@ const SellDetail = ({ saveDetail }: Props) => {
                         <div className="grid grid-cols-3 gap-x-12 gap-y-10 mt-4">
                             <div>
                                 <Label htmlFor="cust_vendorCode">Nhà cung cấp <span className="text-red-600">*</span></Label>
-                                <Input required name="cust_vendorCode" />
+                                <Input onChange={handleChange} value={formValues.cust_vendorCode as string} required name="cust_vendorCode" />
                             </div>
 
                             <div>
                                 <Label htmlFor="soLuong">Số lượng <span className="text-red-600">*</span></Label>
-                                <Input required name="soLuong" min={0} max={1000000} maxLength={7} type="number" />
+                                <Input onChange={handleChange} value={formValues?.soLuong} required name="soLuong" min={0} max={1000000} maxLength={7} type="number" />
                             </div>
 
                             <div>
                                 <Label htmlFor="donViTinh">Đơn vị tính <span className="text-red-600">*</span></Label>
-                                <Input required name="donViTinh" maxLength={50} />
+                                <Input onChange={handleChange} value={formValues?.donViTinh as string} required name="donViTinh" maxLength={50} />
                             </div>
 
                             <div>
                                 <Label htmlFor="daBaoGomThue">Thuế <span className="text-red-600">*</span></Label>
-                                <Select required name="daBaoGomThue">
+                                <Select value={formValues?.daBaoGomThue ? "1" : "0"} required name="daBaoGomThue">
                                     <SelectTrigger id="framework">
                                         <SelectValue placeholder="Select" />
                                     </SelectTrigger>
@@ -135,7 +156,7 @@ const SellDetail = ({ saveDetail }: Props) => {
 
                             <div>
                                 <Label htmlFor="donGia">Đơn giá <span className="text-red-600">*</span></Label>
-                                <Input required maxLength={100} name="donGia"  />
+                                <Input onChange={handleChange} value={formValues?.donGia} required maxLength={100} name="donGia" />
                             </div>
 
                         </div>
@@ -147,17 +168,17 @@ const SellDetail = ({ saveDetail }: Props) => {
                         <div className="grid grid-cols-3 gap-x-12 my-4">
                             <div>
                                 <Label htmlFor="giaoVien">Giáo viên</Label>
-                                <Input name="giaoVien" maxLength={300} />
+                                <Input onChange={handleChange} value={formValues?.giaoVien as string} name="giaoVien" maxLength={300} />
                             </div>
 
                             <div>
                                 <Label htmlFor="dept_room">Phòng</Label>
-                                <Input name="dept_room" maxLength={300} />
+                                <Input onChange={handleChange} value={formValues?.dept_room as string} name="dept_room" maxLength={300} />
                             </div>
 
                             <div>
                                 <Label htmlFor="ghiChu">Ghi chú</Label>
-                                <Input name="ghiChu" maxLength={500} />
+                                <Input onChange={handleChange} value={(formValues?.ghiChu as string[])[0]} name="ghiChu" maxLength={500} />
                             </div>
                         </div>
                     </div>
@@ -167,4 +188,4 @@ const SellDetail = ({ saveDetail }: Props) => {
     )
 }
 
-export default SellDetail;
+export default SellDetailUpdate;

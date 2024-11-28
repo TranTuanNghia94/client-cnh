@@ -1,3 +1,4 @@
+import SellDetailUpdate from "@/components/modal/sell/sell-detail-update"
 import { Button } from "@/components/ui/button"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { numberWithCommas } from "@/lib/other"
@@ -7,7 +8,12 @@ import { MoreVertical } from "lucide-react"
 
 
 
-export const SellDetailColumns: ColumnDef<ISellDetailInput>[] = [
+type ISellDetailExtends = ISellDetailInput & {
+    deleteRow: () => void
+    updateRow: (val: ISellDetailInput) => void
+}
+
+export const SellDetailColumns: ColumnDef<ISellDetailExtends>[] = [
     {
         id: 'No.',
         header: 'No.',
@@ -82,7 +88,6 @@ export const SellDetailColumns: ColumnDef<ISellDetailInput>[] = [
         cell: ({ row }) => {
             const item = row.original
 
-            console.log("log row", item)
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild className="bg-transparent">
@@ -96,8 +101,10 @@ export const SellDetailColumns: ColumnDef<ISellDetailInput>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="text-blue-600">Câp nhật</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">Xoá</DropdownMenuItem>
+                        <DropdownMenuItem asChild className="text-blue-600">
+                            <SellDetailUpdate saveDetail={item.updateRow} data={item} />
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-red-600" onClick={item.deleteRow}>Xoá</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
