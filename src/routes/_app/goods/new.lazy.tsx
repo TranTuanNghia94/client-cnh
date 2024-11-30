@@ -37,7 +37,7 @@ function CreateGoodsPage() {
                 variant: 'success',
             })
 
-            history.back()
+            history.go(-1)
         }
     }, [isSuccess, data])
 

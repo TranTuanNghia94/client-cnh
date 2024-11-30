@@ -11,8 +11,14 @@ export const QUERIES = {
 	ME: 'me',
 	CHANGE_PASSWORD: 'change-password',
 
+	
 	// Customer
 	CUSTOMERS: 'customers',
+	CREATE_CUSTOMER: 'create-customer',
+	GET_CUSTOMER: 'get-customer',
+	UPDATE_CUSTOMER: 'update-customer',
+	GET_CUSTOMER_ADDRESS: 'get-customer-address',
+
 
 	// Vendor
 	VENDORS: 'vendors',

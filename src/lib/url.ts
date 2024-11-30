@@ -13,8 +13,12 @@ export const URL_CHANGE_PASSWORD = URL_ME + '/changePassword';
 
 // Customer
 export const URL_GET_CUSTOMERS = 'khachhang';
-
-
+export const URL_CREATE_CUSTOMER = URL_GET_CUSTOMERS + '/createOne';
+export const URL_UPDATE_CUSTOMER = URL_GET_CUSTOMERS + '/updateOne';
+export const URL_DELETE_CUSTOMER = URL_GET_CUSTOMERS + '/deleteOne';
+export const URL_GET_CONTACTS = URL_GET_CUSTOMERS + '/contacts';
+export const URL_UPDATE_CONTACTS = URL_GET_CUSTOMERS + '/contacts/updateOne';
+export const URL_DELETE_CONTACTS = URL_GET_CUSTOMERS + '/contacts/deleteOne';
 
 
 

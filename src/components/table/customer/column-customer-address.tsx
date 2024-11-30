@@ -1,3 +1,4 @@
+import UpdateCustomerAddress from "@/components/modal/customer/customer-address-update";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ICustomerAddressInput } from "@/types/customer";
@@ -16,9 +17,9 @@ export const CustomerAddressColumns: ColumnDef<ICustomerAddressExtends>[] = [
         header: 'No.',
         accessorKey: 'stt',
         enableColumnFilter: false,
-        cell: (a) =>{
+        cell: (a) => {
             const numb = (a.row.index + 1) + (a.table.getState().pagination.pageIndex * (a.table.getState().pagination.pageSize))
-            return  <div className="text-xs">{numb}</div>
+            return <div className="text-xs">{numb}</div>
         }
 
     },
@@ -27,7 +28,7 @@ export const CustomerAddressColumns: ColumnDef<ICustomerAddressExtends>[] = [
         accessorKey: 'tenNguoiLienHe',
         enableColumnFilter: false,
         header: 'Người liên hệ',
-        cell: ({ row }) => <div className="text-xs">{row.original.tenNguoiLienHe}</div>
+        cell: ({ row }) => <div className="text-xs">{row.original?.tenNguoiLienHe}</div>
 
     },
     {
@@ -35,28 +36,27 @@ export const CustomerAddressColumns: ColumnDef<ICustomerAddressExtends>[] = [
         accessorKey: "soDienThoai",
         enableColumnFilter: false,
         header: 'Số ĐT',
-        cell: ({ row }) => <div className="lowercase text-xs">{row.original.soDienThoai}</div>,
+        cell: ({ row }) => <div className="lowercase text-xs">{row.original?.soDienThoai}</div>,
     },
     {
         id: 'email',
         accessorKey: 'email',
         header: 'Email',
         enableColumnFilter: false,
-        cell: ({ row }) => <div className="text-xs">{row.original.email}</div>,
+        cell: ({ row }) => <div className="text-xs">{row.original?.email}</div>,
     },
     {
         id: 'soNhaTenDuong_1',
         accessorKey: 'soNhaTenDuong_1',
         enableColumnFilter: false,
         header: 'Địa chỉ',
-        cell: ({ row }) => <div className="text-xs">{row.original.soNhaTenDuong_1}</div>,
+        cell: ({ row }) => <div className="text-xs">{row.original?.soNhaTenDuong_1}</div>,
     },
     {
         id: 'actions',
         header: '',
         cell: ({ row }) => {
             const item = row.original
-            console.log(item)
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild className="bg-transparent">
@@ -70,8 +70,10 @@ export const CustomerAddressColumns: ColumnDef<ICustomerAddressExtends>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => item.updateRow(item)} className="text-blue-600">Câp nhật</DropdownMenuItem>
-                        <DropdownMenuItem onClick={item.deleteRow} className="text-red-600">Xoá</DropdownMenuItem>
+                        <DropdownMenuItem asChild className="text-blue-600">
+                            <UpdateCustomerAddress saveDetail={item?.updateRow} data={item}  />
+                        </DropdownMenuItem>
+                        <DropdownMenuItem onClick={item?.deleteRow} className="text-red-600">Xoá</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

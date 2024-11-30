@@ -40,6 +40,9 @@ const AppPaymentNewLazyImport = createFileRoute('/_app/payment/new')()
 const AppGoodsNewLazyImport = createFileRoute('/_app/goods/new')()
 const AppGoodsGoodsIdLazyImport = createFileRoute('/_app/goods/$goodsId')()
 const AppCustomerNewLazyImport = createFileRoute('/_app/customer/new')()
+const AppCustomerCustomerIdLazyImport = createFileRoute(
+  '/_app/customer/$customerId',
+)()
 
 // Create/Update Routes
 
@@ -191,6 +194,13 @@ const AppCustomerNewLazyRoute = AppCustomerNewLazyImport.update({
   import('./routes/_app/customer/new.lazy').then((d) => d.Route),
 )
 
+const AppCustomerCustomerIdLazyRoute = AppCustomerCustomerIdLazyImport.update({
+  path: '/customer/$customerId',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/customer/$customerId.lazy').then((d) => d.Route),
+)
+
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
@@ -242,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/setting'
       fullPath: '/setting'
       preLoaderRoute: typeof AppSettingLazyImport
+      parentRoute: typeof AppImport
+    }
+    '/_app/customer/$customerId': {
+      id: '/_app/customer/$customerId'
+      path: '/customer/$customerId'
+      fullPath: '/customer/$customerId'
+      preLoaderRoute: typeof AppCustomerCustomerIdLazyImport
       parentRoute: typeof AppImport
     }
     '/_app/customer/new': {
@@ -372,6 +389,7 @@ interface AppRouteChildren {
   AppContractLazyRoute: typeof AppContractLazyRoute
   AppHomeLazyRoute: typeof AppHomeLazyRoute
   AppSettingLazyRoute: typeof AppSettingLazyRoute
+  AppCustomerCustomerIdLazyRoute: typeof AppCustomerCustomerIdLazyRoute
   AppCustomerNewLazyRoute: typeof AppCustomerNewLazyRoute
   AppGoodsGoodsIdLazyRoute: typeof AppGoodsGoodsIdLazyRoute
   AppGoodsNewLazyRoute: typeof AppGoodsNewLazyRoute
@@ -395,6 +413,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppContractLazyRoute: AppContractLazyRoute,
   AppHomeLazyRoute: AppHomeLazyRoute,
   AppSettingLazyRoute: AppSettingLazyRoute,
+  AppCustomerCustomerIdLazyRoute: AppCustomerCustomerIdLazyRoute,
   AppCustomerNewLazyRoute: AppCustomerNewLazyRoute,
   AppGoodsGoodsIdLazyRoute: AppGoodsGoodsIdLazyRoute,
   AppGoodsNewLazyRoute: AppGoodsNewLazyRoute,
@@ -424,6 +443,7 @@ export interface FileRoutesByFullPath {
   '/contract': typeof AppContractLazyRoute
   '/home': typeof AppHomeLazyRoute
   '/setting': typeof AppSettingLazyRoute
+  '/customer/$customerId': typeof AppCustomerCustomerIdLazyRoute
   '/customer/new': typeof AppCustomerNewLazyRoute
   '/goods/$goodsId': typeof AppGoodsGoodsIdLazyRoute
   '/goods/new': typeof AppGoodsNewLazyRoute
@@ -451,6 +471,7 @@ export interface FileRoutesByTo {
   '/contract': typeof AppContractLazyRoute
   '/home': typeof AppHomeLazyRoute
   '/setting': typeof AppSettingLazyRoute
+  '/customer/$customerId': typeof AppCustomerCustomerIdLazyRoute
   '/customer/new': typeof AppCustomerNewLazyRoute
   '/goods/$goodsId': typeof AppGoodsGoodsIdLazyRoute
   '/goods/new': typeof AppGoodsNewLazyRoute
@@ -479,6 +500,7 @@ export interface FileRoutesById {
   '/_app/contract': typeof AppContractLazyRoute
   '/_app/home': typeof AppHomeLazyRoute
   '/_app/setting': typeof AppSettingLazyRoute
+  '/_app/customer/$customerId': typeof AppCustomerCustomerIdLazyRoute
   '/_app/customer/new': typeof AppCustomerNewLazyRoute
   '/_app/goods/$goodsId': typeof AppGoodsGoodsIdLazyRoute
   '/_app/goods/new': typeof AppGoodsNewLazyRoute
@@ -508,6 +530,7 @@ export interface FileRouteTypes {
     | '/contract'
     | '/home'
     | '/setting'
+    | '/customer/$customerId'
     | '/customer/new'
     | '/goods/$goodsId'
     | '/goods/new'
@@ -534,6 +557,7 @@ export interface FileRouteTypes {
     | '/contract'
     | '/home'
     | '/setting'
+    | '/customer/$customerId'
     | '/customer/new'
     | '/goods/$goodsId'
     | '/goods/new'
@@ -560,6 +584,7 @@ export interface FileRouteTypes {
     | '/_app/contract'
     | '/_app/home'
     | '/_app/setting'
+    | '/_app/customer/$customerId'
     | '/_app/customer/new'
     | '/_app/goods/$goodsId'
     | '/_app/goods/new'
@@ -624,6 +649,7 @@ export const routeTree = rootRoute
         "/_app/contract",
         "/_app/home",
         "/_app/setting",
+        "/_app/customer/$customerId",
         "/_app/customer/new",
         "/_app/goods/$goodsId",
         "/_app/goods/new",
@@ -656,6 +682,10 @@ export const routeTree = rootRoute
     },
     "/_app/setting": {
       "filePath": "_app/setting.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/customer/$customerId": {
+      "filePath": "_app/customer/$customerId.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/customer/new": {

@@ -19,6 +19,7 @@ const CreateCustomerAddress = ({ saveDetail }: Props) => {
 
         const formData = new FormData(e.currentTarget)
         const data: ICustomerAddressInput = {
+            id: '',
             tenNguoiLienHe: formData.get('tenNguoiLienHe') as string,
             soDienThoai: formData.get('soDienThoai') as string,
             email: formData.get('email') as string,

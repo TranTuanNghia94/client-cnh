@@ -1,6 +1,8 @@
+import ConfirmDeleteCustomer from "@/components/modal/customer/delete";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { ICustomerResponse } from "@/types/customer";
+import { Link } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVertical } from "lucide-react";
 
@@ -10,9 +12,9 @@ export const CustomerColumns: ColumnDef<ICustomerResponse>[] = [
         id: 'No.',
         header: 'No.',
         accessorKey: 'stt',
-        cell: (a) =>{
+        cell: (a) => {
             const numb = (a.row.index + 1) + (a.table.getState().pagination.pageIndex * (a.table.getState().pagination.pageSize))
-            return  <div className="text-xs">{numb}</div>
+            return <div className="text-xs">{numb}</div>
         }
 
     },
@@ -87,8 +89,12 @@ export const CustomerColumns: ColumnDef<ICustomerResponse>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="text-blue-600">Câp nhật</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">Xoá</DropdownMenuItem>
+                        <Link to="/customer/$customerId" params={{ customerId: item.maKhachHang as string }}>
+                            <DropdownMenuItem className="text-blue-600">Câp nhật</DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuItem asChild className="text-red-600">
+                            <ConfirmDeleteCustomer customer={item} />
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

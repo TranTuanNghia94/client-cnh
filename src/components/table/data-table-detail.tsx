@@ -177,7 +177,7 @@ export function DataTableDetail<TData, TValue>({
             <div className="flex items-center justify-between space-x-2 py-4 px-4">
                 <div className="flex items-center gap-2">
                     <Button variant="outline" disabled>
-                        Total: {data.length}
+                        Total: {data?.length}
                     </Button>
 
                     <Select onValueChange={(e) => table.setPageSize(Number(e))}>
