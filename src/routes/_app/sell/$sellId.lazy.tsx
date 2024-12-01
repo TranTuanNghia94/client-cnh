@@ -9,40 +9,85 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { useCreateSell } from '@/hooks/use-sell'
+import { useDeleteSellDetail, useGetSellByOrderCode, useUpdateSell, useUpdateSellDetail } from '@/hooks/use-sell'
 import { useToast } from '@/hooks/use-toast'
 import { ICustomerAddressResponse, ICustomerResponse } from '@/types/customer'
 import { ISellDetailInput, ISellInput } from '@/types/sell'
-import { createLazyFileRoute, useRouter } from '@tanstack/react-router'
+import { createLazyFileRoute, useParams } from '@tanstack/react-router'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 
-export const Route = createLazyFileRoute('/_app/sell/new')({
-    component: NewSellPage
+export const Route = createLazyFileRoute('/_app/sell/$sellId')({
+    component: UpdateSellPage
 })
 
-
-function NewSellPage() {
+function UpdateSellPage() {
+    const { sellId } = useParams({ strict: false })
     const { toast } = useToast()
-    const { history } = useRouter()
-    const { mutateAsync, isSuccess, data } = useCreateSell()
+    const { mutateAsync: getSell, data: sellData, isSuccess: getSuccess } = useGetSellByOrderCode()
+    const { mutateAsync, isSuccess, data } = useUpdateSell()
+    const { mutateAsync: updateDetail } = useUpdateSellDetail()
+    const { mutateAsync: deleteDetail } = useDeleteSellDetail()
 
     const [listDetail, setListDetail] = useState<ISellDetailInput[]>([])
     const [customer, setCustomer] = useState<ICustomerResponse | undefined>(undefined)
     const [address, setAddress] = useState<ICustomerAddressResponse | undefined>(undefined)
+    const [sell, setSell] = useState<ISellInput | undefined>(undefined)
+
+    useEffect(() => {
+        getSell(sellId as string)
+    }, [])
 
     useEffect(() => {
         if (isSuccess && data) {
             toast({
                 title: 'Thao tác thành công',
-                description: 'Tạo đơn hàng thành công',
+                description: 'Cập nhật đơn hàng thành công',
                 variant: 'success',
             })
-
-            history.go(-1)
         }
     }, [isSuccess, data])
 
+
+    useEffect(() => {
+        if (getSuccess && sellData.results) {
+            setCustomer(sellData.results[0].KhachHang)
+            setAddress(sellData.results[0].LienHeGiaoHang)
+            setSell({
+                id: sellData.results[0].id,
+                soHopDong: sellData.results[0]?.soHopDong,
+                ngayHoanThanh: sellData.results[0]?.ngayHoanThanh,
+                hanThanhToan: sellData.results[0]?.hanThanhToan,
+                ngayTao: sellData.results[0]?.ngayTao,
+                orderNumber: sellData.results[0]?.orderNumber,
+                ghiChu: sellData.results[0]?.ghiChu
+            })
+            if (sellData.results[0].ChiTietDonHang_s) {
+                const listDetail = sellData.results[0].ChiTietDonHang_s.map((item) => {
+                    return {
+                        id: item.id,
+                        soLuong: item?.soLuong,
+                        donGia: item?.donGia,
+                        thanhTien: item?.thanhTien,
+                        thue: item?.thue,
+                        donViTinh: item?.donViTinh,
+                        giaoVien: item?.giaoVien,
+                        dept_room: item?.dept_room,
+                        ghiChu: item?.ghiChu,
+                        createdAt: item?.createdAt,
+                        updatedAt: null,
+                        deletedAt: null,
+                        cust_maHangHoa: item?.cust_maHangHoa,
+                        cust_tenHangHoa: item?.cust_tenHangHoa,
+                        cust_vendorCode: item?.cust_vendorCode,
+
+                    } as ISellDetailInput
+                })
+
+                setListDetail(listDetail)
+            }
+        }
+    }, [getSuccess, sellData])
 
     const handleSelectCustomer = (data: ICustomerResponse) => {
         setCustomer(data)
@@ -55,6 +100,7 @@ function NewSellPage() {
     const handleAddDetail = (data: ISellDetailInput) => {
         setListDetail([...listDetail, {
             ...data,
+            id: "",
             donGia: data.donGia.toString(),
             soLuong: data.soLuong.toString(),
             thanhTien: data.thanhTien.toString(),
@@ -63,15 +109,40 @@ function NewSellPage() {
     }
 
     const handleDeleteDetail = (index: number) => {
-        const newList = [...listDetail]
-        newList.splice(index, 1)
-        setListDetail(newList)
+        const item = listDetail[index]
+
+        if (item.id) {
+            item.deletedAt = moment().toISOString()
+            item.updatedAt = moment().toISOString()
+
+            setListDetail([...listDetail])
+        } else {
+            const newList = [...listDetail]
+            newList.splice(index, 1)
+            setListDetail(newList)
+        }
+
     }
 
     const handleUpdateDetail = (index: number, data: ISellDetailInput) => {
         const newList = [...listDetail]
-        newList[index] = data
+        newList[index] = {
+            ...newList[index],
+            ...data,
+            updatedAt: moment().toISOString()
+        }
         setListDetail(newList)
+    }
+
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        e.preventDefault()
+        if (e.target.value) {
+            setSell({
+                ...sell,
+                [e.target.name]: e.target.value as string
+            })
+        }
+
     }
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -79,48 +150,39 @@ function NewSellPage() {
 
         if (!customer || !address) {
             toast({
-                title: 'Thao tác không hợp lệ',
+                title: 'Thao tác khóa',
                 description: 'Vui lòng chọn khách hàng và điểm giao hàng',
-                variant: 'warning',
+                variant: 'destructive',
             })
         }
 
-        const formData = new FormData(e.currentTarget)
+        const listCreate = listDetail.filter((item) => {
+            return !item.id
+        })
 
-        const total = listDetail.reduce((acc, item) => {
-            acc += item.soLuong * item.donGia
-            return acc
-        }, 0)
 
-        const sellData: ISellInput = {
-            orderNumber: moment().format('YYYYMMDDHHmmss'),
-            soHopDong: formData.get('soHopDong')?.toString().trim() as string,
-            ngayTao: formData.get('ngayTao')?.toString().trim() as string,
-            hanThanhToan: formData.get('hanThanhToan')?.toString().trim() as string,
-            ghiChu: formData.get('ghiChu')?.toString().trim() as string ? [formData.get('ghiChu')?.toString().trim() as string] : [],
-            thanhTien: total.toString(),
-            thanhTienTruocThue: total.toString(),
-            LienHeGiaoHang: {
-                connect: {
-                    id: address?.id
-                }
-            },
-            KhachHang: {
-                connect: {
-                    id: customer?.id
-                }
-            },
-            ChiTietDonHang_s: {
-                create: listDetail
+        listDetail.forEach((item) => {
+            if (item.id !== "" && item.updatedAt && item.deletedAt === null) {
+                updateDetail(item)
+            } else if (item.id !== "" && item.deletedAt !== null) {
+                deleteDetail(item.id as string)
+            }
+        })
+
+
+        if (sell) {
+            sell.ChiTietDonHang_s = {
+                create: listCreate
             }
         }
 
-        mutateAsync(sellData)
+
+        mutateAsync(sell)
     }
 
     return (
         <div >
-            <HeaderPageLayout idForm="createSellForm" title="Thêm đơn bán hàng" />
+            <HeaderPageLayout idForm="updateSellForm" title="Chỉnh sửa đơn bán hàng" />
 
             <div className="grid grid-cols-4 gap-x-4">
                 <div>
@@ -129,7 +191,7 @@ function NewSellPage() {
                             <CardTitle>Thông tin đơn hàng</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <form id="createSellForm" onSubmit={onSubmit}>
+                            <form id="updateSellForm" onSubmit={onSubmit}>
                                 <div className="my-3">
                                     <div className="flex justify-between">
                                         <Label className="text-xs" htmlFor="maKhachHang">
@@ -146,21 +208,21 @@ function NewSellPage() {
                                     <Label className="text-xs" htmlFor="soHopDong">
                                         Số hợp đồng <span className="text-red-600">*</span>
                                     </Label>
-                                    <Input name="soHopDong" maxLength={200} required className="col-span-2" />
+                                    <Input onChange={handleOnChange} value={sell?.soHopDong ?? ""} name="soHopDong" maxLength={200} required className="col-span-2" />
                                 </div>
 
                                 <div className="my-3">
                                     <Label className="text-xs" htmlFor="maHangHoa">
                                         Ngày hợp đồng <span className="text-red-600">*</span>
                                     </Label>
-                                    <Input name="ngayTao" type="date" maxLength={200} required className="col-span-2" />
+                                    <Input onChange={handleOnChange} value={sell?.ngayTao ? moment(sell?.ngayTao?.toString()).format('YYYY-MM-DD') : ""} name="ngayTao" type="date" maxLength={200} required className="col-span-2" />
                                 </div>
 
                                 <div className="my-3">
                                     <Label className="text-xs" htmlFor="hanThanhToan">
                                         Deadline <span className="text-red-600">*</span>
                                     </Label>
-                                    <Input name="hanThanhToan" type="date" className="col-span-2" />
+                                    <Input onChange={handleOnChange} value={sell?.hanThanhToan ? moment(sell?.hanThanhToan?.toString()).format('YYYY-MM-DD') : ""} name="hanThanhToan" type="date" className="col-span-2" />
                                 </div>
                             </form>
                         </CardContent>
@@ -205,7 +267,7 @@ function NewSellPage() {
                                     <Label className="text-xs" htmlFor="maHangHoa">
                                         Ghi chú <span className="text-red-600">*</span>
                                     </Label>
-                                    <Textarea name="ghiChu" maxLength={200} required className="col-span-2" />
+                                    <Textarea onChange={handleOnChange} name="ghiChu" maxLength={200} required className="col-span-2" />
                                 </div>
                             </form>
                         </CardContent>

@@ -47,6 +47,8 @@ const SellDetail = ({ saveDetail }: Props) => {
             daBaoGomThue: data["daBaoGomThue"] === "0" ? false : true,
             cust_maHangHoa: goodsSelected.maHangHoa,
             cust_tenHangHoa: goodsSelected.tenHang,
+            thue: '0',
+            ghiChu: data?.ghiChu ? [data?.ghiChu] as string[] : [],
             HangHoa: {
                 connect: {
                     id: goodsSelected.id,
@@ -82,16 +84,18 @@ const SellDetail = ({ saveDetail }: Props) => {
 
                         <div className="grid grid-cols-3 gap-x-12 gap-y-10 mt-4">
                             <div>
-                                <Label>Mã hàng <span className="text-red-600">*</span></Label>
-                                <FindGoods setGoodsData={handleSelectGoods} />
+                                <div className="flex gap-x-4">
+                                    <Label>Mã hàng <span className="text-red-600">*</span></Label>
+                                    <FindGoods setGoodsData={handleSelectGoods} />
+                                </div>
 
-                                <div className="text-sm text-gray-500">{goodsSelected?.maHangHoa}</div>
+                                <div className="text-sm text-gray-500 mt-2">{goodsSelected?.maHangHoa}</div>
 
                             </div>
 
                             <div>
                                 <Label>Tên hàng <span className="text-red-600">*</span></Label>
-                                <div className="text-sm text-gray-500">{goodsSelected?.tenHang}</div>
+                                <div className="text-sm text-gray-500 mt-2">{goodsSelected?.tenHang}</div>
                             </div>
 
                             {/* <div>
@@ -135,7 +139,7 @@ const SellDetail = ({ saveDetail }: Props) => {
 
                             <div>
                                 <Label htmlFor="donGia">Đơn giá <span className="text-red-600">*</span></Label>
-                                <Input required maxLength={100} name="donGia"  />
+                                <Input required maxLength={100} name="donGia" />
                             </div>
 
                         </div>

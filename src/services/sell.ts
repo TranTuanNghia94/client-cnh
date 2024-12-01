@@ -1,9 +1,61 @@
 import { fetcherWithAuth, METHODS } from "@/lib/api";
-import { URL_GET_ORDERS } from "@/lib/url";
+import {
+  URL_CREATE_ORDER,
+  URL_DELETE_ORDER,
+  URL_DELETE_ORDER_LINE,
+  URL_GET_ORDERS,
+  URL_UPDATE_ORDER,
+  URL_UPDATE_ORDER_LINE,
+} from "@/lib/url";
 import { ISellRequest, ISellResponse } from "@/types/sell";
 
 export const getAllSells = async (body?: ISellRequest) => {
   const response = await fetcherWithAuth<ISellResponse>(URL_GET_ORDERS, {
+    method: METHODS.POST,
+    data: body,
+  });
+
+  return response;
+};
+
+export const createSell = async (body?: ISellRequest) => {
+  const response = await fetcherWithAuth<ISellResponse>(URL_CREATE_ORDER, {
+    method: METHODS.POST,
+    data: body,
+  });
+
+  return response;
+};
+
+export const updateSell = async (body?: ISellRequest) => {
+  const response = await fetcherWithAuth<ISellResponse>(URL_UPDATE_ORDER, {
+    method: METHODS.POST,
+    data: body,
+  });
+
+  return response;
+};
+
+export const deleteSell = async (body?: ISellRequest) => {
+  const response = await fetcherWithAuth<ISellResponse>(URL_DELETE_ORDER, {
+    method: METHODS.POST,
+    data: body,
+  });
+
+  return response;
+};
+
+export const updateSellDetail = async (body?: ISellRequest) => {
+  const response = await fetcherWithAuth<ISellResponse>(URL_UPDATE_ORDER_LINE, {
+    method: METHODS.POST,
+    data: body,
+  });
+
+  return response;
+};
+
+export const deleteSellDetail = async (body?: ISellRequest) => {
+  const response = await fetcherWithAuth<ISellResponse>(URL_DELETE_ORDER_LINE, {
     method: METHODS.POST,
     data: body,
   });

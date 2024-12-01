@@ -56,6 +56,18 @@ export const URL_DELETE_GOODS = URL_GET_GOODS + '/deleteOne';
 
 // Order
 export const URL_GET_ORDERS = 'order';
+export const URL_DELETE_ORDER = URL_GET_ORDERS + '/deleteOne';
+export const URL_UPDATE_ORDER = URL_GET_ORDERS + '/updateOne';
+export const URL_CREATE_ORDER = URL_GET_ORDERS + '/createOne';
+
+
+
+// Order Lines
+export const URL_GET_ORDER_LINES = 'orderline';
+export const URL_DELETE_ORDER_LINE = URL_GET_ORDER_LINES + '/deleteOne';
+export const URL_UPDATE_ORDER_LINE = URL_GET_ORDER_LINES + '/updateOne';
+export const URL_CREATE_ORDER_LINE = URL_GET_ORDER_LINES + '/createOne';
+export const URL_CREATE_BATCH_ORDER_LINE = URL_GET_ORDER_LINES + '/createMany';
 
 
 

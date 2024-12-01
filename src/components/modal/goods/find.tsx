@@ -34,7 +34,7 @@ const FindGoods = (props: Props) => {
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="secondary" size="sm">Chọn</Button>
+                <Button type="button" size="xs">Chọn</Button>
             </DialogTrigger>
             <DialogContent className="max-w-[90%]" onInteractOutside={(e) => { e.preventDefault() }}>
                 <DialogHeader>

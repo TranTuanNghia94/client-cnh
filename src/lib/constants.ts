@@ -44,6 +44,10 @@ export const QUERIES = {
 	// Sell
 	SELLS: 'sells',
 	ADD_SELL_DETAIL: 'add-sell-detail',
+	CREATE_SELL: 'create-sell',
+	GET_SELL: 'get-sell',
+	UPDATE_SELL: 'update-sell',
+	UPDATE_SELL_DETAIL: 'update-sell-detail',
 
 
 	// Purchase

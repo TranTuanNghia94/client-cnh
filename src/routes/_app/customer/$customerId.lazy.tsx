@@ -103,9 +103,6 @@ function UpdateCustomerPage() {
             item.updatedAt = moment().toISOString()
 
             setListAddress([...listAddress])
-
-
-            console.log("list address", listAddress)
         } else {
             const newList = [...listAddress]
             newList.splice(index, 1)
@@ -199,7 +196,7 @@ function UpdateCustomerPage() {
                                             }
                                         }
                                     })}
-                                    columns={CustomerAddressColumns } 
+                                    columns={CustomerAddressColumns} 
                                 />
                             </div>
                         </CardContent>

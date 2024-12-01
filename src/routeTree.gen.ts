@@ -36,6 +36,7 @@ const AppUserNewLazyImport = createFileRoute('/_app/user/new')()
 const AppTypeNewLazyImport = createFileRoute('/_app/type/new')()
 const AppTypeTypeIdLazyImport = createFileRoute('/_app/type/$typeId')()
 const AppSellNewLazyImport = createFileRoute('/_app/sell/new')()
+const AppSellSellIdLazyImport = createFileRoute('/_app/sell/$sellId')()
 const AppPaymentNewLazyImport = createFileRoute('/_app/payment/new')()
 const AppGoodsNewLazyImport = createFileRoute('/_app/goods/new')()
 const AppGoodsGoodsIdLazyImport = createFileRoute('/_app/goods/$goodsId')()
@@ -166,6 +167,13 @@ const AppSellNewLazyRoute = AppSellNewLazyImport.update({
   getParentRoute: () => AppRoute,
 } as any).lazy(() => import('./routes/_app/sell/new.lazy').then((d) => d.Route))
 
+const AppSellSellIdLazyRoute = AppSellSellIdLazyImport.update({
+  path: '/sell/$sellId',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/sell/$sellId.lazy').then((d) => d.Route),
+)
+
 const AppPaymentNewLazyRoute = AppPaymentNewLazyImport.update({
   path: '/payment/new',
   getParentRoute: () => AppRoute,
@@ -289,6 +297,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPaymentNewLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/sell/$sellId': {
+      id: '/_app/sell/$sellId'
+      path: '/sell/$sellId'
+      fullPath: '/sell/$sellId'
+      preLoaderRoute: typeof AppSellSellIdLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/sell/new': {
       id: '/_app/sell/new'
       path: '/sell/new'
@@ -394,6 +409,7 @@ interface AppRouteChildren {
   AppGoodsGoodsIdLazyRoute: typeof AppGoodsGoodsIdLazyRoute
   AppGoodsNewLazyRoute: typeof AppGoodsNewLazyRoute
   AppPaymentNewLazyRoute: typeof AppPaymentNewLazyRoute
+  AppSellSellIdLazyRoute: typeof AppSellSellIdLazyRoute
   AppSellNewLazyRoute: typeof AppSellNewLazyRoute
   AppTypeTypeIdLazyRoute: typeof AppTypeTypeIdLazyRoute
   AppTypeNewLazyRoute: typeof AppTypeNewLazyRoute
@@ -418,6 +434,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppGoodsGoodsIdLazyRoute: AppGoodsGoodsIdLazyRoute,
   AppGoodsNewLazyRoute: AppGoodsNewLazyRoute,
   AppPaymentNewLazyRoute: AppPaymentNewLazyRoute,
+  AppSellSellIdLazyRoute: AppSellSellIdLazyRoute,
   AppSellNewLazyRoute: AppSellNewLazyRoute,
   AppTypeTypeIdLazyRoute: AppTypeTypeIdLazyRoute,
   AppTypeNewLazyRoute: AppTypeNewLazyRoute,
@@ -448,6 +465,7 @@ export interface FileRoutesByFullPath {
   '/goods/$goodsId': typeof AppGoodsGoodsIdLazyRoute
   '/goods/new': typeof AppGoodsNewLazyRoute
   '/payment/new': typeof AppPaymentNewLazyRoute
+  '/sell/$sellId': typeof AppSellSellIdLazyRoute
   '/sell/new': typeof AppSellNewLazyRoute
   '/type/$typeId': typeof AppTypeTypeIdLazyRoute
   '/type/new': typeof AppTypeNewLazyRoute
@@ -476,6 +494,7 @@ export interface FileRoutesByTo {
   '/goods/$goodsId': typeof AppGoodsGoodsIdLazyRoute
   '/goods/new': typeof AppGoodsNewLazyRoute
   '/payment/new': typeof AppPaymentNewLazyRoute
+  '/sell/$sellId': typeof AppSellSellIdLazyRoute
   '/sell/new': typeof AppSellNewLazyRoute
   '/type/$typeId': typeof AppTypeTypeIdLazyRoute
   '/type/new': typeof AppTypeNewLazyRoute
@@ -505,6 +524,7 @@ export interface FileRoutesById {
   '/_app/goods/$goodsId': typeof AppGoodsGoodsIdLazyRoute
   '/_app/goods/new': typeof AppGoodsNewLazyRoute
   '/_app/payment/new': typeof AppPaymentNewLazyRoute
+  '/_app/sell/$sellId': typeof AppSellSellIdLazyRoute
   '/_app/sell/new': typeof AppSellNewLazyRoute
   '/_app/type/$typeId': typeof AppTypeTypeIdLazyRoute
   '/_app/type/new': typeof AppTypeNewLazyRoute
@@ -535,6 +555,7 @@ export interface FileRouteTypes {
     | '/goods/$goodsId'
     | '/goods/new'
     | '/payment/new'
+    | '/sell/$sellId'
     | '/sell/new'
     | '/type/$typeId'
     | '/type/new'
@@ -562,6 +583,7 @@ export interface FileRouteTypes {
     | '/goods/$goodsId'
     | '/goods/new'
     | '/payment/new'
+    | '/sell/$sellId'
     | '/sell/new'
     | '/type/$typeId'
     | '/type/new'
@@ -589,6 +611,7 @@ export interface FileRouteTypes {
     | '/_app/goods/$goodsId'
     | '/_app/goods/new'
     | '/_app/payment/new'
+    | '/_app/sell/$sellId'
     | '/_app/sell/new'
     | '/_app/type/$typeId'
     | '/_app/type/new'
@@ -654,6 +677,7 @@ export const routeTree = rootRoute
         "/_app/goods/$goodsId",
         "/_app/goods/new",
         "/_app/payment/new",
+        "/_app/sell/$sellId",
         "/_app/sell/new",
         "/_app/type/$typeId",
         "/_app/type/new",
@@ -702,6 +726,10 @@ export const routeTree = rootRoute
     },
     "/_app/payment/new": {
       "filePath": "_app/payment/new.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/sell/$sellId": {
+      "filePath": "_app/sell/$sellId.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/sell/new": {

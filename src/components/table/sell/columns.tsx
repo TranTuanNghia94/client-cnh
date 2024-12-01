@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { SELL_STATUS } from "@/lib/constants"
 import { numberWithCommas } from "@/lib/other"
 import { ISellResponse } from "@/types/sell"
+import { Link } from "@tanstack/react-router"
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVertical } from "lucide-react"
 import moment from "moment"
@@ -36,9 +37,9 @@ export const SellsColumns: ColumnDef<ISellResponse>[] = [
         id: 'No.',
         header: 'No.',
         accessorKey: 'stt',
-        cell: (a) =>{
+        cell: (a) => {
             const numb = (a.row.index + 1) + (a.table.getState().pagination.pageIndex * (a.table.getState().pagination.pageSize))
-            return  <div className="text-xs">{numb}</div>
+            return <div className="text-xs">{numb}</div>
         }
 
     },
@@ -223,7 +224,9 @@ export const SellsColumns: ColumnDef<ISellResponse>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="text-blue-600">Câp nhật</DropdownMenuItem>
+                        <Link to="/sell/$sellId" params={{ sellId: item.orderNumber as string }}>
+                            <DropdownMenuItem className="text-blue-600">Cập nhật</DropdownMenuItem>
+                        </Link>
                         <DropdownMenuItem >Đổi trạng thái</DropdownMenuItem>
                         <DropdownMenuItem className="text-red-600">Xoá</DropdownMenuItem>
                     </DropdownMenuContent>

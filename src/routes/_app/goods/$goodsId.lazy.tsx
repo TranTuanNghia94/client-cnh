@@ -8,7 +8,7 @@ import { useGetGoodsByCode, useUpdateGoods } from '@/hooks/use-goods'
 import { useToast } from '@/hooks/use-toast'
 import { useGetTypes } from '@/hooks/use-type'
 import { IGoodsInput } from '@/types/goods'
-import { createLazyFileRoute, useParams, useRouter } from '@tanstack/react-router'
+import { createLazyFileRoute, useParams } from '@tanstack/react-router'
 import { useEffect } from 'react'
 
 export const Route = createLazyFileRoute('/_app/goods/$goodsId')({
@@ -17,7 +17,6 @@ export const Route = createLazyFileRoute('/_app/goods/$goodsId')({
 
 function UpdateGoodsPage() {
     const { toast } = useToast()
-    const { history } = useRouter()
     const { goodsId } = useParams({ strict: false })
 
     const { mutateAsync: getGoods, data: goods } = useGetGoodsByCode()
@@ -42,8 +41,6 @@ function UpdateGoodsPage() {
                 description: 'Cập nhật thành công',
                 variant: 'success',
             })
-
-            history.go(-1)
         }
     }, [isSuccess, data])
 

@@ -13,6 +13,9 @@ export const useGetCustomers = () => {
         mutationKey: [QUERIES.CUSTOMERS],
         mutationFn: async (payload?: IPaginationAndSearch<ICustomerWhere, unknown>) => {
             const request: ICustomerRequest = {
+                include: {
+                  LienHe_s: true  
+                },
                 ...payload,
             }
 
