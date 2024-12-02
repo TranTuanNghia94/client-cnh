@@ -1,7 +1,7 @@
 import { QUERIES } from "@/lib/constants"
 import { createSell, deleteSell, deleteSellDetail, getAllSells, updateSell, updateSellDetail } from "@/services/sell"
 import { IPaginationAndSearch } from "@/types/api"
-import { ISellDetailInput, ISellInput, ISellRequest, ISellWhere } from "@/types/sell"
+import { ISellDetailInput, ISellInput, ISellRequest, ISellUpdate, ISellWhere } from "@/types/sell"
 import { useMutation } from "@tanstack/react-query"
 import { useToast } from "./use-toast"
 
@@ -50,7 +50,11 @@ export const useGetSellByOrderCode = () => {
                 },
                 include: {
                     KhachHang: true,
-                    ChiTietDonHang_s: true,
+                    ChiTietDonHang_s: {
+                        include: {
+                            HangHoa: true
+                        }
+                    },
                     LienHeGiaoHang: true,
                 }
             }
@@ -73,7 +77,7 @@ export const useUpdateSell = () => {
 
     const mutation = useMutation({
         mutationKey: [QUERIES.UPDATE_SELL],
-        mutationFn: async (payload?: ISellInput) => {
+        mutationFn: async (payload?: ISellUpdate) => {
             const request: ISellRequest = {
                 where: {
                     id: payload?.id

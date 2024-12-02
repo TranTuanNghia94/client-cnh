@@ -69,6 +69,7 @@ function UpdateSellPage() {
                         soLuong: item?.soLuong,
                         donGia: item?.donGia,
                         thanhTien: item?.thanhTien,
+
                         thue: item?.thue,
                         donViTinh: item?.donViTinh,
                         giaoVien: item?.giaoVien,
@@ -77,8 +78,8 @@ function UpdateSellPage() {
                         createdAt: item?.createdAt,
                         updatedAt: null,
                         deletedAt: null,
-                        cust_maHangHoa: item?.cust_maHangHoa,
-                        cust_tenHangHoa: item?.cust_tenHangHoa,
+                        cust_maHangHoa: item?.cust_maHangHoa ?? item.HangHoa?.maHangHoa,
+                        cust_tenHangHoa: item?.cust_tenHangHoa ?? item.HangHoa?.tenHang,
                         cust_vendorCode: item?.cust_vendorCode,
 
                     } as ISellDetailInput

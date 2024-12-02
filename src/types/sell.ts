@@ -89,6 +89,7 @@ export interface ISellResponse {
 }
 
 export interface ISellInput extends Prisma.DonHangCreateInput {}
+export interface ISellUpdate extends Prisma.DonHangUpdateInput {}
 
 export interface ISellRequest {
 	select?: IQuerySell;
