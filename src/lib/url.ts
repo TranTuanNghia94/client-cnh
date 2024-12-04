@@ -8,6 +8,9 @@ export const URL_LOGIN = 'auth/login';
 export const URL_GET_USERS = 'user';
 export const URL_ME = URL_GET_USERS + '/me';
 export const URL_CHANGE_PASSWORD = URL_ME + '/changePassword';
+export const URL_DISABLE_USER = URL_GET_USERS + '/disenableOne';
+export const URL_CREATE_USER = URL_GET_USERS + '/createOne';
+export const URL_UPDATE_USER = URL_GET_USERS + '/updateOne';
 
 
 
@@ -45,8 +48,10 @@ export const URL_DELETE_GROUP_OF_GOODS = URL_GET_GROUP_OF_GOODS + '/deleteOne';
 // Goods
 export const URL_GET_GOODS = 'hanghoa';
 export const URL_CREATE_GOODS = URL_GET_GOODS + '/createOne';
+export const URL_CREATE_MANY_GOODS = URL_GET_GOODS + '/createMany';
 export const URL_UPDATE_GOODS = URL_GET_GOODS + '/updateOne';
 export const URL_DELETE_GOODS = URL_GET_GOODS + '/deleteOne';
+export const URL_VADIDATE_GOODS = URL_GET_GOODS + '/findNonExistentIds';
 
 
 
@@ -59,6 +64,8 @@ export const URL_GET_ORDERS = 'order';
 export const URL_DELETE_ORDER = URL_GET_ORDERS + '/deleteOne';
 export const URL_UPDATE_ORDER = URL_GET_ORDERS + '/updateOne';
 export const URL_CREATE_ORDER = URL_GET_ORDERS + '/createOne';
+export const URL_ORDER_INDEX = URL_GET_ORDERS + '/number';
+export const URL_CREATE_MANY_ORDERS = URL_GET_ORDERS + '/createMany';
 
 
 
@@ -87,3 +94,13 @@ export const URL_GET_ALL_PO = 'po';
 
 // Payment Request
 export const URL_GET_PAYMENT_REQUEST = 'de-nghi-thanh-toan';
+
+
+
+
+
+
+
+// System
+export const URL_SYS = 'system';
+export const URL_GET_ALL_ROLES = URL_SYS + '/role';

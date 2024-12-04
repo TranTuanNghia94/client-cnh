@@ -1,5 +1,5 @@
 import { QUERIES } from "@/lib/constants"
-import { createSell, deleteSell, deleteSellDetail, getAllSells, updateSell, updateSellDetail } from "@/services/sell"
+import { createManySells, createSell, deleteSell, deleteSellDetail, getAllSells, getSellIndex, updateSell, updateSellDetail } from "@/services/sell"
 import { IPaginationAndSearch } from "@/types/api"
 import { ISellDetailInput, ISellInput, ISellRequest, ISellUpdate, ISellWhere } from "@/types/sell"
 import { useMutation } from "@tanstack/react-query"
@@ -189,6 +189,50 @@ export const useDeleteSellDetail = () => {
             }
 
             return await deleteSellDetail(request)
+        },
+        onError(error: Error) {
+            toast({
+                variant: "destructive",
+                title: "Có lỗi xảy ra",
+                description: error.message,
+            })
+        }
+    })
+
+    return mutation
+}
+
+export const useGetSellIndex = () => {
+    const { toast } = useToast()
+
+    const mutation = useMutation({
+        mutationKey: [QUERIES.GET_SELL],
+        mutationFn: async () => {
+            return await getSellIndex()
+        },
+        onError(error: Error) {
+            toast({
+                variant: "destructive",
+                title: "Có lỗi xảy ra",
+                description: error.message,
+            })
+        }
+    })
+
+    return mutation
+}
+
+export const useCreateManySells = () => {
+    const { toast } = useToast()
+
+    const mutation = useMutation({
+        mutationKey: [QUERIES.CREATE_MANY_SELL],
+        mutationFn: async (payload: ISellInput[]) => {
+            const request = {
+                data: payload
+            }
+
+            return await createManySells(request)
         },
         onError(error: Error) {
             toast({

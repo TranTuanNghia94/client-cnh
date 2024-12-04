@@ -6,10 +6,10 @@ import { Separator } from "../ui/separator";
 export interface HeaderPageLayoutProps {
     title: string
     idForm?: string
+    buttonSubmit?: React.ReactNode
 }
 
-
-const HeaderPageLayout = ({ title, idForm }: HeaderPageLayoutProps) => {
+const HeaderPageLayout = ({ title, idForm, buttonSubmit }: HeaderPageLayoutProps) => {
     const { history } = useRouter()
 
     return (
@@ -17,7 +17,9 @@ const HeaderPageLayout = ({ title, idForm }: HeaderPageLayoutProps) => {
             <div className="uppercase font-bold tracking-tight">{title}</div>
 
             <div className="flex gap-x-4">
-                <Button type="submit" form={idForm} size="sm">Lưu</Button>
+                {
+                    buttonSubmit ?? <Button type="submit" form={idForm} size="sm">Lưu</Button>
+                }
                 <Separator orientation="vertical" className="h-7 bg-primary" />
                 <Button type="button" size="sm" variant="secondary" onClick={() => history.go(-1)}>Thoát</Button>
             </div>

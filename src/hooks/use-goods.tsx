@@ -1,7 +1,7 @@
 import { QUERIES } from "@/lib/constants"
-import { createGoods, deleteGoods, getAllGoods, updateGoods } from "@/services/goods"
+import { createGoods, createManyGoods, deleteGoods, getAllGoods, updateGoods, validateGoods } from "@/services/goods"
 import { IPaginationAndSearch } from "@/types/api"
-import { IGoodsInput, IGoodsRequest, IGoodsWhere } from "@/types/goods"
+import { IGoodsInput, IGoodsRequest, IGoodsValidate, IGoodsWhere } from "@/types/goods"
 import { useMutation } from "@tanstack/react-query"
 import { useToast } from "./use-toast"
 
@@ -130,6 +130,50 @@ export const useDeleteGoods = () => {
             }
 
             return await deleteGoods(request)
+        },
+        onError(error: Error) {
+            toast({
+                variant: "destructive",
+                title: "Có lỗi xảy ra",
+                description: error.message,
+            })
+        },
+    })
+
+    return mutation
+}
+
+export const useValidateGoods = () => {
+    const { toast } = useToast()
+
+    const mutation = useMutation({
+        mutationKey: [QUERIES.UPDATE_GOODS],
+        mutationFn: async (payload: IGoodsValidate[]) => {
+            return await validateGoods(payload)
+        },
+        onError(error: Error) {
+            toast({
+                variant: "destructive",
+                title: "Có lỗi xảy ra",
+                description: error.message,
+            })
+        },
+    })
+
+    return mutation
+}
+
+export const useCreateManyGoods = () => {
+    const { toast } = useToast()
+
+    const mutation = useMutation({
+        mutationKey: [QUERIES.UPDATE_GOODS],
+        mutationFn: async (payload: IGoodsInput[]) => {
+            const request: IGoodsRequest = {
+                data: payload
+            }
+
+            return await createManyGoods(request)
         },
         onError(error: Error) {
             toast({

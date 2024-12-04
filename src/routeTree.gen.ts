@@ -27,6 +27,7 @@ const AppVendorIndexLazyImport = createFileRoute('/_app/vendor/')()
 const AppUserIndexLazyImport = createFileRoute('/_app/user/')()
 const AppTypeIndexLazyImport = createFileRoute('/_app/type/')()
 const AppSellIndexLazyImport = createFileRoute('/_app/sell/')()
+const AppPurchaseIndexLazyImport = createFileRoute('/_app/purchase/')()
 const AppPaymentIndexLazyImport = createFileRoute('/_app/payment/')()
 const AppGoodsIndexLazyImport = createFileRoute('/_app/goods/')()
 const AppCustomerIndexLazyImport = createFileRoute('/_app/customer/')()
@@ -35,6 +36,7 @@ const AppVendorVendorIdLazyImport = createFileRoute('/_app/vendor/$vendorId')()
 const AppUserNewLazyImport = createFileRoute('/_app/user/new')()
 const AppTypeNewLazyImport = createFileRoute('/_app/type/new')()
 const AppTypeTypeIdLazyImport = createFileRoute('/_app/type/$typeId')()
+const AppSellUploadLazyImport = createFileRoute('/_app/sell/upload')()
 const AppSellNewLazyImport = createFileRoute('/_app/sell/new')()
 const AppSellSellIdLazyImport = createFileRoute('/_app/sell/$sellId')()
 const AppPaymentNewLazyImport = createFileRoute('/_app/payment/new')()
@@ -110,6 +112,13 @@ const AppSellIndexLazyRoute = AppSellIndexLazyImport.update({
   import('./routes/_app/sell/index.lazy').then((d) => d.Route),
 )
 
+const AppPurchaseIndexLazyRoute = AppPurchaseIndexLazyImport.update({
+  path: '/purchase/',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/purchase/index.lazy').then((d) => d.Route),
+)
+
 const AppPaymentIndexLazyRoute = AppPaymentIndexLazyImport.update({
   path: '/payment/',
   getParentRoute: () => AppRoute,
@@ -160,6 +169,13 @@ const AppTypeTypeIdLazyRoute = AppTypeTypeIdLazyImport.update({
   getParentRoute: () => AppRoute,
 } as any).lazy(() =>
   import('./routes/_app/type/$typeId.lazy').then((d) => d.Route),
+)
+
+const AppSellUploadLazyRoute = AppSellUploadLazyImport.update({
+  path: '/sell/upload',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/sell/upload.lazy').then((d) => d.Route),
 )
 
 const AppSellNewLazyRoute = AppSellNewLazyImport.update({
@@ -311,6 +327,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSellNewLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/sell/upload': {
+      id: '/_app/sell/upload'
+      path: '/sell/upload'
+      fullPath: '/sell/upload'
+      preLoaderRoute: typeof AppSellUploadLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/type/$typeId': {
       id: '/_app/type/$typeId'
       path: '/type/$typeId'
@@ -367,6 +390,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPaymentIndexLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/purchase/': {
+      id: '/_app/purchase/'
+      path: '/purchase'
+      fullPath: '/purchase'
+      preLoaderRoute: typeof AppPurchaseIndexLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/sell/': {
       id: '/_app/sell/'
       path: '/sell'
@@ -411,6 +441,7 @@ interface AppRouteChildren {
   AppPaymentNewLazyRoute: typeof AppPaymentNewLazyRoute
   AppSellSellIdLazyRoute: typeof AppSellSellIdLazyRoute
   AppSellNewLazyRoute: typeof AppSellNewLazyRoute
+  AppSellUploadLazyRoute: typeof AppSellUploadLazyRoute
   AppTypeTypeIdLazyRoute: typeof AppTypeTypeIdLazyRoute
   AppTypeNewLazyRoute: typeof AppTypeNewLazyRoute
   AppUserNewLazyRoute: typeof AppUserNewLazyRoute
@@ -419,6 +450,7 @@ interface AppRouteChildren {
   AppCustomerIndexLazyRoute: typeof AppCustomerIndexLazyRoute
   AppGoodsIndexLazyRoute: typeof AppGoodsIndexLazyRoute
   AppPaymentIndexLazyRoute: typeof AppPaymentIndexLazyRoute
+  AppPurchaseIndexLazyRoute: typeof AppPurchaseIndexLazyRoute
   AppSellIndexLazyRoute: typeof AppSellIndexLazyRoute
   AppTypeIndexLazyRoute: typeof AppTypeIndexLazyRoute
   AppUserIndexLazyRoute: typeof AppUserIndexLazyRoute
@@ -436,6 +468,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppPaymentNewLazyRoute: AppPaymentNewLazyRoute,
   AppSellSellIdLazyRoute: AppSellSellIdLazyRoute,
   AppSellNewLazyRoute: AppSellNewLazyRoute,
+  AppSellUploadLazyRoute: AppSellUploadLazyRoute,
   AppTypeTypeIdLazyRoute: AppTypeTypeIdLazyRoute,
   AppTypeNewLazyRoute: AppTypeNewLazyRoute,
   AppUserNewLazyRoute: AppUserNewLazyRoute,
@@ -444,6 +477,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppCustomerIndexLazyRoute: AppCustomerIndexLazyRoute,
   AppGoodsIndexLazyRoute: AppGoodsIndexLazyRoute,
   AppPaymentIndexLazyRoute: AppPaymentIndexLazyRoute,
+  AppPurchaseIndexLazyRoute: AppPurchaseIndexLazyRoute,
   AppSellIndexLazyRoute: AppSellIndexLazyRoute,
   AppTypeIndexLazyRoute: AppTypeIndexLazyRoute,
   AppUserIndexLazyRoute: AppUserIndexLazyRoute,
@@ -467,6 +501,7 @@ export interface FileRoutesByFullPath {
   '/payment/new': typeof AppPaymentNewLazyRoute
   '/sell/$sellId': typeof AppSellSellIdLazyRoute
   '/sell/new': typeof AppSellNewLazyRoute
+  '/sell/upload': typeof AppSellUploadLazyRoute
   '/type/$typeId': typeof AppTypeTypeIdLazyRoute
   '/type/new': typeof AppTypeNewLazyRoute
   '/user/new': typeof AppUserNewLazyRoute
@@ -475,6 +510,7 @@ export interface FileRoutesByFullPath {
   '/customer': typeof AppCustomerIndexLazyRoute
   '/goods': typeof AppGoodsIndexLazyRoute
   '/payment': typeof AppPaymentIndexLazyRoute
+  '/purchase': typeof AppPurchaseIndexLazyRoute
   '/sell': typeof AppSellIndexLazyRoute
   '/type': typeof AppTypeIndexLazyRoute
   '/user': typeof AppUserIndexLazyRoute
@@ -496,6 +532,7 @@ export interface FileRoutesByTo {
   '/payment/new': typeof AppPaymentNewLazyRoute
   '/sell/$sellId': typeof AppSellSellIdLazyRoute
   '/sell/new': typeof AppSellNewLazyRoute
+  '/sell/upload': typeof AppSellUploadLazyRoute
   '/type/$typeId': typeof AppTypeTypeIdLazyRoute
   '/type/new': typeof AppTypeNewLazyRoute
   '/user/new': typeof AppUserNewLazyRoute
@@ -504,6 +541,7 @@ export interface FileRoutesByTo {
   '/customer': typeof AppCustomerIndexLazyRoute
   '/goods': typeof AppGoodsIndexLazyRoute
   '/payment': typeof AppPaymentIndexLazyRoute
+  '/purchase': typeof AppPurchaseIndexLazyRoute
   '/sell': typeof AppSellIndexLazyRoute
   '/type': typeof AppTypeIndexLazyRoute
   '/user': typeof AppUserIndexLazyRoute
@@ -526,6 +564,7 @@ export interface FileRoutesById {
   '/_app/payment/new': typeof AppPaymentNewLazyRoute
   '/_app/sell/$sellId': typeof AppSellSellIdLazyRoute
   '/_app/sell/new': typeof AppSellNewLazyRoute
+  '/_app/sell/upload': typeof AppSellUploadLazyRoute
   '/_app/type/$typeId': typeof AppTypeTypeIdLazyRoute
   '/_app/type/new': typeof AppTypeNewLazyRoute
   '/_app/user/new': typeof AppUserNewLazyRoute
@@ -534,6 +573,7 @@ export interface FileRoutesById {
   '/_app/customer/': typeof AppCustomerIndexLazyRoute
   '/_app/goods/': typeof AppGoodsIndexLazyRoute
   '/_app/payment/': typeof AppPaymentIndexLazyRoute
+  '/_app/purchase/': typeof AppPurchaseIndexLazyRoute
   '/_app/sell/': typeof AppSellIndexLazyRoute
   '/_app/type/': typeof AppTypeIndexLazyRoute
   '/_app/user/': typeof AppUserIndexLazyRoute
@@ -557,6 +597,7 @@ export interface FileRouteTypes {
     | '/payment/new'
     | '/sell/$sellId'
     | '/sell/new'
+    | '/sell/upload'
     | '/type/$typeId'
     | '/type/new'
     | '/user/new'
@@ -565,6 +606,7 @@ export interface FileRouteTypes {
     | '/customer'
     | '/goods'
     | '/payment'
+    | '/purchase'
     | '/sell'
     | '/type'
     | '/user'
@@ -585,6 +627,7 @@ export interface FileRouteTypes {
     | '/payment/new'
     | '/sell/$sellId'
     | '/sell/new'
+    | '/sell/upload'
     | '/type/$typeId'
     | '/type/new'
     | '/user/new'
@@ -593,6 +636,7 @@ export interface FileRouteTypes {
     | '/customer'
     | '/goods'
     | '/payment'
+    | '/purchase'
     | '/sell'
     | '/type'
     | '/user'
@@ -613,6 +657,7 @@ export interface FileRouteTypes {
     | '/_app/payment/new'
     | '/_app/sell/$sellId'
     | '/_app/sell/new'
+    | '/_app/sell/upload'
     | '/_app/type/$typeId'
     | '/_app/type/new'
     | '/_app/user/new'
@@ -621,6 +666,7 @@ export interface FileRouteTypes {
     | '/_app/customer/'
     | '/_app/goods/'
     | '/_app/payment/'
+    | '/_app/purchase/'
     | '/_app/sell/'
     | '/_app/type/'
     | '/_app/user/'
@@ -679,6 +725,7 @@ export const routeTree = rootRoute
         "/_app/payment/new",
         "/_app/sell/$sellId",
         "/_app/sell/new",
+        "/_app/sell/upload",
         "/_app/type/$typeId",
         "/_app/type/new",
         "/_app/user/new",
@@ -687,6 +734,7 @@ export const routeTree = rootRoute
         "/_app/customer/",
         "/_app/goods/",
         "/_app/payment/",
+        "/_app/purchase/",
         "/_app/sell/",
         "/_app/type/",
         "/_app/user/",
@@ -736,6 +784,10 @@ export const routeTree = rootRoute
       "filePath": "_app/sell/new.lazy.tsx",
       "parent": "/_app"
     },
+    "/_app/sell/upload": {
+      "filePath": "_app/sell/upload.lazy.tsx",
+      "parent": "/_app"
+    },
     "/_app/type/$typeId": {
       "filePath": "_app/type/$typeId.lazy.tsx",
       "parent": "/_app"
@@ -766,6 +818,10 @@ export const routeTree = rootRoute
     },
     "/_app/payment/": {
       "filePath": "_app/payment/index.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/purchase/": {
+      "filePath": "_app/purchase/index.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/sell/": {

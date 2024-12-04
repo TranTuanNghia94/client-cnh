@@ -42,7 +42,7 @@ const LIST_ITEM = [
     },
     {
         name: 'Đơn mua hàng',
-        href: '/type',
+        href: '/purchase',
         icon: BaggageClaim
     },
     {

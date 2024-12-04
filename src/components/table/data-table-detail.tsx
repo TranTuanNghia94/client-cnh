@@ -28,7 +28,9 @@ import { Input } from "../ui/input"
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[],
-    listTools?: React.ReactNode
+    listTools?: React.ReactNode,
+    wrapperClassName?: string,
+    noDataText?: string | null
 }
 
 interface ColumnFilter {
@@ -42,7 +44,9 @@ const emptyArray: unknown[] = []
 export function DataTableDetail<TData, TValue>({
     columns,
     data,
-    listTools
+    listTools,
+    wrapperClassName,
+    noDataText
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -129,7 +133,7 @@ export function DataTableDetail<TData, TValue>({
             <Separator className="my-2 bg-secondary-foreground" />
 
             <div>
-                <Table>
+                <Table wrapperClassName={wrapperClassName}>
                     <TableHeader className="sticky top-0 bg-background">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
@@ -165,7 +169,7 @@ export function DataTableDetail<TData, TValue>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    No results.
+                                   {noDataText ?? "No results."}
                                 </TableCell>
                             </TableRow>
                         )}

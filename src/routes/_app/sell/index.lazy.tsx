@@ -26,6 +26,8 @@ function SellPage() {
         return (
             <div className='flex gap-2'>
                 <Button size="sm" variant="outline" onClick={() => navigate({ to: "/sell/new" })}>Tạo mới</Button>
+
+                <Button size="sm" variant="outline" onClick={() => navigate({ to: "/sell/upload" })}>Upload file</Button>
             </div>
         )
     }, [])

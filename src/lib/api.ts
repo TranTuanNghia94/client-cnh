@@ -2,14 +2,12 @@ import { IResponseAPI } from "@/types/api";
 import { getCookie, REFRESH_TOKEN, TOKEN } from "./cookie";
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 
-
 export const METHODS = {
   GET: "GET",
   POST: "POST",
   PUT: "PUT",
   DELETE: "DELETE",
-}
-
+};
 
 export const BASE_URL =
   process.env.NODE_ENV === "production"
@@ -50,7 +48,7 @@ export const fetcher = async <T>(url: string, config?: AxiosRequestConfig) => {
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
-    const errorFortmat = axiosError.response?.data
+    const errorFortmat = axiosError.response?.data;
     throw errorFortmat;
   }
 };
@@ -62,7 +60,11 @@ export const fetcherWithAuth = async <T>(
   const token = getCookie(TOKEN);
   const refreshToken = getCookie(REFRESH_TOKEN);
   try {
-    const response = await createAPIClient(BASE_URL, token, refreshToken).request<IResponseAPI<T>>({
+    const response = await createAPIClient(
+      BASE_URL,
+      token,
+      refreshToken
+    ).request<IResponseAPI<T>>({
       url,
       ...config,
     });
@@ -70,7 +72,7 @@ export const fetcherWithAuth = async <T>(
     return response.data;
   } catch (error) {
     const axiosError = error as AxiosError;
-    const errorFortmat = axiosError.response?.data
+    const errorFortmat = axiosError.response?.data;
     throw errorFortmat;
   }
 };

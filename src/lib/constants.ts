@@ -10,6 +10,10 @@ export const QUERIES = {
     USERS: 'users',
 	ME: 'me',
 	CHANGE_PASSWORD: 'change-password',
+	ALL_ROLES: 'all-roles',
+	DISABLE_USER: 'disable-user',
+	CREATE_USER: 'create-user',
+	UPDATE_USER: 'update-user',
 
 	
 	// Customer
@@ -48,6 +52,7 @@ export const QUERIES = {
 	GET_SELL: 'get-sell',
 	UPDATE_SELL: 'update-sell',
 	UPDATE_SELL_DETAIL: 'update-sell-detail',
+	CREATE_MANY_SELL: 'create-many-sell',
 
 
 	// Purchase
@@ -110,3 +115,6 @@ export const SELL_STATUS = {
 	'Đã thanh toán một phần': 'Đã thanh toán một phần',
 	'Đã thanh toán 100%': 'Đã thanh toán 100%',
 };
+
+export const MAX_PAYLOAD_SIZE = 300;
+export const MAX_PAYLOAD_ORDER_SIZE = 5;
