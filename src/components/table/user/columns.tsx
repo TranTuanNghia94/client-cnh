@@ -1,8 +1,10 @@
+import ConfirmActivateUser from "@/components/modal/user/activate";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { LIST_ROLES } from "@/lib/constants";
 import { IUserResponse } from "@/types";
+import { Link } from "@tanstack/react-router";
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVertical } from "lucide-react";
 
@@ -17,8 +19,6 @@ const getUserTitle = (val: IUserResponse) => {
         LIST_ROLES.INVENTORY_AUDITOR
     ];
 
-    console.log(val)
-
     for (const role of roles) {
         if (val.Assignment?.Roles && val.Assignment?.Roles.some((r) => r.name === role.code)) {
             return role.name;
@@ -31,9 +31,9 @@ export const UserColumns: ColumnDef<IUserResponse>[] = [
         id: 'No.',
         header: 'No.',
         accessorKey: 'stt',
-        cell: (a) =>{
+        cell: (a) => {
             const numb = (a.row.index + 1) + (a.table.getState().pagination.pageIndex * (a.table.getState().pagination.pageSize))
-            return  <div className="text-xs">{numb}</div>
+            return <div className="text-xs">{numb}</div>
         }
 
     },
@@ -115,8 +115,12 @@ export const UserColumns: ColumnDef<IUserResponse>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem className="text-blue-600">Câp nhật</DropdownMenuItem>
-                        <DropdownMenuItem>Gán quyền</DropdownMenuItem>
-                        <DropdownMenuItem className="text-red-600">Khoá</DropdownMenuItem>
+                        <Link to="/user/$aclUserId" params={{ aclUserId: item.username as string }}>
+                            <DropdownMenuItem className="text-blue-600">Gán quyền</DropdownMenuItem>
+                        </Link>
+                        <DropdownMenuItem asChild>
+                            <ConfirmActivateUser user={item} />
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

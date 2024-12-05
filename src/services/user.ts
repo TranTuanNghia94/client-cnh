@@ -8,7 +8,7 @@ import {
   URL_ME,
   URL_UPDATE_USER,
 } from "@/lib/url";
-import { IUserRequest, IUserResponse } from "@/types";
+import { IRolesResponse, IUserRequest, IUserResponse } from "@/types";
 
 export const getAllUsers = async (body?: IUserRequest) => {
   const response = await fetcherWithAuth<IUserResponse>(URL_GET_USERS, {
@@ -40,14 +40,14 @@ export const changePassword = async (data: {
 };
 
 export const getAllRoles = async () => {
-  const response = await fetcherWithAuth<IUserResponse>(URL_GET_ALL_ROLES, {
+  const response = await fetcherWithAuth<IRolesResponse>(URL_GET_ALL_ROLES, {
     method: METHODS.POST,
   });
 
   return response;
 };
 
-export const disableUser = async (data: { id: string }) => {
+export const disableUser = async (data: IUserRequest) => {
   const response = await fetcherWithAuth<IUserResponse>(URL_DISABLE_USER, {
     method: METHODS.POST,
     data,

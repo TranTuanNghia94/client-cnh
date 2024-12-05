@@ -34,6 +34,7 @@ const AppCustomerIndexLazyImport = createFileRoute('/_app/customer/')()
 const AppVendorNewLazyImport = createFileRoute('/_app/vendor/new')()
 const AppVendorVendorIdLazyImport = createFileRoute('/_app/vendor/$vendorId')()
 const AppUserNewLazyImport = createFileRoute('/_app/user/new')()
+const AppUserAclUserIdLazyImport = createFileRoute('/_app/user/$aclUserId')()
 const AppTypeNewLazyImport = createFileRoute('/_app/type/new')()
 const AppTypeTypeIdLazyImport = createFileRoute('/_app/type/$typeId')()
 const AppSellUploadLazyImport = createFileRoute('/_app/sell/upload')()
@@ -158,6 +159,13 @@ const AppUserNewLazyRoute = AppUserNewLazyImport.update({
   path: '/user/new',
   getParentRoute: () => AppRoute,
 } as any).lazy(() => import('./routes/_app/user/new.lazy').then((d) => d.Route))
+
+const AppUserAclUserIdLazyRoute = AppUserAclUserIdLazyImport.update({
+  path: '/user/$aclUserId',
+  getParentRoute: () => AppRoute,
+} as any).lazy(() =>
+  import('./routes/_app/user/$aclUserId.lazy').then((d) => d.Route),
+)
 
 const AppTypeNewLazyRoute = AppTypeNewLazyImport.update({
   path: '/type/new',
@@ -348,6 +356,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppTypeNewLazyImport
       parentRoute: typeof AppImport
     }
+    '/_app/user/$aclUserId': {
+      id: '/_app/user/$aclUserId'
+      path: '/user/$aclUserId'
+      fullPath: '/user/$aclUserId'
+      preLoaderRoute: typeof AppUserAclUserIdLazyImport
+      parentRoute: typeof AppImport
+    }
     '/_app/user/new': {
       id: '/_app/user/new'
       path: '/user/new'
@@ -444,6 +459,7 @@ interface AppRouteChildren {
   AppSellUploadLazyRoute: typeof AppSellUploadLazyRoute
   AppTypeTypeIdLazyRoute: typeof AppTypeTypeIdLazyRoute
   AppTypeNewLazyRoute: typeof AppTypeNewLazyRoute
+  AppUserAclUserIdLazyRoute: typeof AppUserAclUserIdLazyRoute
   AppUserNewLazyRoute: typeof AppUserNewLazyRoute
   AppVendorVendorIdLazyRoute: typeof AppVendorVendorIdLazyRoute
   AppVendorNewLazyRoute: typeof AppVendorNewLazyRoute
@@ -471,6 +487,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSellUploadLazyRoute: AppSellUploadLazyRoute,
   AppTypeTypeIdLazyRoute: AppTypeTypeIdLazyRoute,
   AppTypeNewLazyRoute: AppTypeNewLazyRoute,
+  AppUserAclUserIdLazyRoute: AppUserAclUserIdLazyRoute,
   AppUserNewLazyRoute: AppUserNewLazyRoute,
   AppVendorVendorIdLazyRoute: AppVendorVendorIdLazyRoute,
   AppVendorNewLazyRoute: AppVendorNewLazyRoute,
@@ -504,6 +521,7 @@ export interface FileRoutesByFullPath {
   '/sell/upload': typeof AppSellUploadLazyRoute
   '/type/$typeId': typeof AppTypeTypeIdLazyRoute
   '/type/new': typeof AppTypeNewLazyRoute
+  '/user/$aclUserId': typeof AppUserAclUserIdLazyRoute
   '/user/new': typeof AppUserNewLazyRoute
   '/vendor/$vendorId': typeof AppVendorVendorIdLazyRoute
   '/vendor/new': typeof AppVendorNewLazyRoute
@@ -535,6 +553,7 @@ export interface FileRoutesByTo {
   '/sell/upload': typeof AppSellUploadLazyRoute
   '/type/$typeId': typeof AppTypeTypeIdLazyRoute
   '/type/new': typeof AppTypeNewLazyRoute
+  '/user/$aclUserId': typeof AppUserAclUserIdLazyRoute
   '/user/new': typeof AppUserNewLazyRoute
   '/vendor/$vendorId': typeof AppVendorVendorIdLazyRoute
   '/vendor/new': typeof AppVendorNewLazyRoute
@@ -567,6 +586,7 @@ export interface FileRoutesById {
   '/_app/sell/upload': typeof AppSellUploadLazyRoute
   '/_app/type/$typeId': typeof AppTypeTypeIdLazyRoute
   '/_app/type/new': typeof AppTypeNewLazyRoute
+  '/_app/user/$aclUserId': typeof AppUserAclUserIdLazyRoute
   '/_app/user/new': typeof AppUserNewLazyRoute
   '/_app/vendor/$vendorId': typeof AppVendorVendorIdLazyRoute
   '/_app/vendor/new': typeof AppVendorNewLazyRoute
@@ -600,6 +620,7 @@ export interface FileRouteTypes {
     | '/sell/upload'
     | '/type/$typeId'
     | '/type/new'
+    | '/user/$aclUserId'
     | '/user/new'
     | '/vendor/$vendorId'
     | '/vendor/new'
@@ -630,6 +651,7 @@ export interface FileRouteTypes {
     | '/sell/upload'
     | '/type/$typeId'
     | '/type/new'
+    | '/user/$aclUserId'
     | '/user/new'
     | '/vendor/$vendorId'
     | '/vendor/new'
@@ -660,6 +682,7 @@ export interface FileRouteTypes {
     | '/_app/sell/upload'
     | '/_app/type/$typeId'
     | '/_app/type/new'
+    | '/_app/user/$aclUserId'
     | '/_app/user/new'
     | '/_app/vendor/$vendorId'
     | '/_app/vendor/new'
@@ -728,6 +751,7 @@ export const routeTree = rootRoute
         "/_app/sell/upload",
         "/_app/type/$typeId",
         "/_app/type/new",
+        "/_app/user/$aclUserId",
         "/_app/user/new",
         "/_app/vendor/$vendorId",
         "/_app/vendor/new",
@@ -794,6 +818,10 @@ export const routeTree = rootRoute
     },
     "/_app/type/new": {
       "filePath": "_app/type/new.lazy.tsx",
+      "parent": "/_app"
+    },
+    "/_app/user/$aclUserId": {
+      "filePath": "_app/user/$aclUserId.lazy.tsx",
       "parent": "/_app"
     },
     "/_app/user/new": {

@@ -78,5 +78,25 @@ export interface IUserRequest {
 	where?: IUserWhere;
 	take?: number;
 	skip?: number;
-	data?: IUserInput;
+	data?: IUserInput | IUserUpdateInput;
+  orderBy?: Prisma.UserOrderByWithRelationInput | Prisma.UserOrderByWithRelationInput[] | unknown;
+}
+
+export interface IRolesResponse {
+	metadata?: string;
+	version?: number;
+	id?: string;
+	name?: string;
+	displayName?: string;
+	description?: string;
+	isSystemUsage?: false;
+	createdAt?: Date | string | null;
+	updatedAt?: Date | string | null;
+	deletedAt?: Date | string | null;
+}
+
+export interface IUserRoles {
+	roles: IRolesResponse;
+	undoDefault: boolean;
+	default?: boolean;
 }

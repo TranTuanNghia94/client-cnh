@@ -1,6 +1,6 @@
 import { QUERIES } from "@/lib/constants"
 import { changePassword, createUser, disableUser, getAllRoles, getAllUsers, getMe, updateUser } from "@/services/user"
-import { IUserInput, IUserRequest, IUserWhere } from "@/types"
+import { IUserInput, IUserRequest, IUserUpdateInput, IUserWhere } from "@/types"
 import { IPaginationAndSearch } from "@/types/api"
 import { useMutation } from "@tanstack/react-query"
 import { useToast } from "./use-toast"
@@ -20,6 +20,9 @@ export const useGetUsers = () => {
                         },
                     },
                 },
+                orderBy:{
+                    createdAt: "desc"
+                },
                 ...payload
             }
 
@@ -32,6 +35,42 @@ export const useGetUsers = () => {
                 description: error.message,
             })
         },
+    })
+
+    return mutation
+}
+
+export const useGetUserByUsername = () => {
+    const { toast } = useToast()
+
+    const mutation = useMutation({
+        mutationKey: [QUERIES.GET_USER_BY_CODE],
+        mutationFn: async (username: string) => {
+            const request: IUserRequest  = {
+                where: {
+                    username: username
+                },
+                select: {
+					id: true,
+					fullname: true,
+					email: true,
+					Assignment: {
+						select: {
+							Roles: true,
+						},
+					}
+				}
+            } 
+
+            return await getAllUsers(request)
+        },
+        onError(error: Error) {
+            toast({
+                variant: "destructive",
+                title: "Có lỗi xảy ra",
+                description: error.message,
+            })
+        },  
     })
 
     return mutation
@@ -104,8 +143,14 @@ export const useDisableUser = () => {
 
     const mutation = useMutation({
         mutationKey: [QUERIES.DISABLE_USER],
-        mutationFn: async (data: { id: string }) => {
-            return await disableUser(data)
+        mutationFn: async (data: { username: string }) => {
+            const request: IUserRequest = {
+                where: {
+                    username: data.username
+                }
+            }
+
+            return await disableUser(request)
         },
         onError(error: Error) {
             toast({
@@ -148,8 +193,11 @@ export const useUpdateUser = () => {
 
     const mutation = useMutation({
         mutationKey: [QUERIES.UPDATE_USER],
-        mutationFn: async (payload: IUserInput) => {
+        mutationFn: async (payload: IUserUpdateInput) => {
             const request: IUserRequest = {
+                where: {
+                    id: payload.id as string
+                },
                 data: payload
             }
 
