@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import { Settings, ShoppingCart, User, LogOut, Package, Receipt, Tag, Album, Handshake, Store, BaggageClaim, Warehouse } from 'lucide-react'
+import { Settings, ShoppingCart, User, LogOut, Package, Receipt, Tag, Album, Handshake, Store, BaggageClaim, Warehouse, PackagePlus, PackageMinus } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { ModeToggle } from '../mode-toggle'
 import { useLogoutMutation } from '@/hooks/use-auth'
@@ -49,6 +49,16 @@ const LIST_ITEM = [
         name: 'Tồn kho',
         href: '/inventory-stock',
         icon: Warehouse
+    },
+    {
+        name: 'Nhập kho',
+        href: '/inventory-in',
+        icon: PackagePlus
+    },
+    {
+        name: 'Xuất kho',
+        href: '/inventory-out',
+        icon: PackageMinus
     },
     {
         name: 'Hồ sơ',

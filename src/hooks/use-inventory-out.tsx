@@ -16,6 +16,10 @@ export const useGetInventoryOut = () => {
                 where: {
                     ...payload?.search,
                 },
+                include: {
+                    CreatedBy: true,
+                    Kho: true,
+                },
             }
             return await getInventoryOut(request)
         },

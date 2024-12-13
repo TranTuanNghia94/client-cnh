@@ -16,6 +16,12 @@ export const useGetInventoryIn = () => {
                 where: {
                     ...payload?.search,
                 },
+                include: {
+                    CreatedBy: true,
+                    DonHang: true,
+                    NhaCungCap: true,
+                    Kho: true,
+                },
             }
             return await getInventoryIn(request)
         },
