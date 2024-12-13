@@ -20,7 +20,7 @@ export const useGetUsers = () => {
                         },
                     },
                 },
-                orderBy:{
+                orderBy: {
                     createdAt: "desc"
                 },
                 ...payload
@@ -46,21 +46,24 @@ export const useGetUserByUsername = () => {
     const mutation = useMutation({
         mutationKey: [QUERIES.GET_USER_BY_CODE],
         mutationFn: async (username: string) => {
-            const request: IUserRequest  = {
+            const request: IUserRequest = {
                 where: {
                     username: username
                 },
                 select: {
-					id: true,
-					fullname: true,
-					email: true,
-					Assignment: {
-						select: {
-							Roles: true,
-						},
-					}
-				}
-            } 
+                    id: true,
+                    fullname: true,
+                    email: true,
+                    phongBan: true,
+                    lastname: true,
+                    firstname: true,
+                    Assignment: {
+                        select: {
+                            Roles: true,
+                        },
+                    }
+                }
+            }
 
             return await getAllUsers(request)
         },
@@ -70,7 +73,7 @@ export const useGetUserByUsername = () => {
                 title: "Có lỗi xảy ra",
                 description: error.message,
             })
-        },  
+        },
     })
 
     return mutation
@@ -171,7 +174,7 @@ export const useCreateUser = () => {
         mutationKey: [QUERIES.CREATE_USER],
         mutationFn: async (payload: IUserInput) => {
             const request: IUserRequest = {
-                data: payload   
+                data: payload
             }
 
             return await createUser(request)

@@ -3,7 +3,7 @@ import { TypeColumns } from '@/components/table/type/columns'
 import { Button } from '@/components/ui/button'
 import { useGetTypes } from '@/hooks/use-type'
 import { IPaginationAndSearch } from '@/types/api'
-import { IGroupOfGoodsResponse, IGroupOfGoodsWhere } from '@/types/type'
+import { IGroupOfGoodsWhere } from '@/types/type'
 import { createLazyFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
 import { useMemo } from 'react'
 
@@ -30,7 +30,11 @@ function TypePage() {
 
     return (
         <div>
-            <DataTable listTools={listTools} fetchData={(req) => queryAllTypes(req as IPaginationAndSearch<IGroupOfGoodsWhere>)} total={data?.metadata?.total} title='DANH SÁCH NHÓM HÀNG' data={data?.results as IGroupOfGoodsResponse[] || []} columns={TypeColumns} />
+            <DataTable listTools={listTools} 
+                fetchData={(req) => queryAllTypes(req as IPaginationAndSearch<IGroupOfGoodsWhere>)} 
+                total={data?.metadata?.total} title='DANH SÁCH NHÓM HÀNG' 
+                data={data?.results?.map((item) => ({ ...item, refetch: queryAllTypes })) || []} 
+                columns={TypeColumns} />
             <Outlet />
         </div>
     )

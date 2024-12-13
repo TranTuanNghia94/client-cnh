@@ -26,7 +26,10 @@ const getUserTitle = (val: IUserResponse) => {
     }
 }
 
-export const UserColumns: ColumnDef<IUserResponse>[] = [
+type IUserExtends = IUserResponse & { refetch: () => void }
+
+
+export const UserColumns: ColumnDef<IUserExtends>[] = [
     {
         id: 'No.',
         header: 'No.',
@@ -100,7 +103,6 @@ export const UserColumns: ColumnDef<IUserResponse>[] = [
         header: '',
         cell: ({ row }) => {
             const item = row.original
-            console.log(item)
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild className="bg-transparent">
@@ -114,12 +116,14 @@ export const UserColumns: ColumnDef<IUserResponse>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem className="text-blue-600">Câp nhật</DropdownMenuItem>
+                        <Link to="/user/edit/$userId" params={{ userId: item.username as string }}>
+                            <DropdownMenuItem className="text-blue-600">Cập nhật</DropdownMenuItem>
+                        </Link>
                         <Link to="/user/$aclUserId" params={{ aclUserId: item.username as string }}>
                             <DropdownMenuItem className="text-blue-600">Gán quyền</DropdownMenuItem>
                         </Link>
                         <DropdownMenuItem asChild>
-                            <ConfirmActivateUser user={item} />
+                            <ConfirmActivateUser user={item} refetch={item.refetch} />
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

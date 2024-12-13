@@ -4,12 +4,19 @@ import {
   URL_CREATE_ORDER,
   URL_DELETE_ORDER,
   URL_DELETE_ORDER_LINE,
+  URL_GET_ORDER_LINES,
   URL_GET_ORDERS,
   URL_ORDER_INDEX,
   URL_UPDATE_ORDER,
   URL_UPDATE_ORDER_LINE,
 } from "@/lib/url";
-import { ISellInput, ISellRequest, ISellResponse } from "@/types/sell";
+import {
+  ISellDetailRequest,
+  ISellDetailResponse,
+  ISellInput,
+  ISellRequest,
+  ISellResponse,
+} from "@/types/sell";
 
 export const getAllSells = async (body?: ISellRequest) => {
   const response = await fetcherWithAuth<ISellResponse>(URL_GET_ORDERS, {
@@ -76,6 +83,18 @@ export const getSellIndex = async () => {
 export const createManySells = async (body: { data: ISellInput[] }) => {
   const response = await fetcherWithAuth<ISellResponse>(
     URL_CREATE_MANY_ORDERS,
+    {
+      method: METHODS.POST,
+      data: body,
+    }
+  );
+
+  return response;
+};
+
+export const getSellDetailByIds = async (body: ISellDetailRequest) => {
+  const response = await fetcherWithAuth<ISellDetailResponse>(
+    URL_GET_ORDER_LINES,
     {
       method: METHODS.POST,
       data: body,

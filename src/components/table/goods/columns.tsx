@@ -7,7 +7,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVertical } from "lucide-react"
 
 
-export const GoodsColumns: ColumnDef<IGoodsResponse>[] = [
+export type IGoodsExtends = IGoodsResponse & { refetch: () => void }
+
+export const GoodsColumns: ColumnDef<IGoodsExtends>[] = [
     {
         id: 'No.',
         header: 'No.',
@@ -110,7 +112,7 @@ export const GoodsColumns: ColumnDef<IGoodsResponse>[] = [
                             <DropdownMenuItem className="text-blue-600">Cập nhật</DropdownMenuItem>
                         </Link>
                         <DropdownMenuItem asChild className="text-red-600">
-                            <ConfirmDeleteGoods goods={item} />
+                            <ConfirmDeleteGoods goods={item} refetch={item?.refetch} />
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

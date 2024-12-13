@@ -3,7 +3,7 @@ import { DataTable } from '@/components/table/data-table'
 import { Button } from '@/components/ui/button'
 import { useGetCustomers } from '@/hooks/use-customer'
 import { IPaginationAndSearch } from '@/types/api'
-import { ICustomerResponse, ICustomerWhere } from '@/types/customer'
+import { ICustomerWhere } from '@/types/customer'
 import { createLazyFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
 import { useMemo } from 'react'
 
@@ -24,7 +24,7 @@ function CustomerPage() {
     const listTools = useMemo(() => {
         return (
             <div className='flex gap-2'>
-                <Button size="sm" variant="outline" onClick={() => navigate({to: "/customer/new"})}>Tạo mới</Button>
+                <Button size="sm" variant="outline" onClick={() => navigate({ to: "/customer/new" })}>Tạo mới</Button>
                 <Button size="sm" variant="outline">Xuất file</Button>
                 <Button size="sm" variant="outline">Cập nhật file</Button>
             </div>
@@ -33,7 +33,11 @@ function CustomerPage() {
 
     return (
         <div>
-            <DataTable listTools={listTools} fetchData={(req) => queryAllCustomers(req as IPaginationAndSearch<ICustomerWhere>)} total={data?.metadata?.total} title='DANH SÁCH KHÁCH HÀNG' data={data?.results as ICustomerResponse[] || []} columns={CustomerColumns} />
+            <DataTable listTools={listTools}
+                fetchData={(req) => queryAllCustomers(req as IPaginationAndSearch<ICustomerWhere>)} 
+                total={data?.metadata?.total} title='DANH SÁCH KHÁCH HÀNG' 
+                data={data?.results?.map((item) => ({ ...item, refetch: queryAllCustomers })) || []} 
+                columns={CustomerColumns} />
             <Outlet />
         </div>
     )

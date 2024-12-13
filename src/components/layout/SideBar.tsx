@@ -1,15 +1,10 @@
 import { Link } from '@tanstack/react-router'
-import { Home, Settings, ShoppingCart, User, LogOut, Package, Receipt, Tag, Album, Handshake, Store, BaggageClaim } from 'lucide-react'
+import { Settings, ShoppingCart, User, LogOut, Package, Receipt, Tag, Album, Handshake, Store, BaggageClaim, Warehouse } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { ModeToggle } from '../mode-toggle'
 import { useLogoutMutation } from '@/hooks/use-auth'
 
 const LIST_ITEM = [
-    {
-        name: 'Dashboard',
-        href: '/home',
-        icon: Home
-    },
     {
         name: 'Người dùng',
         href: '/user',
@@ -49,6 +44,11 @@ const LIST_ITEM = [
         name: 'Thanh toán',
         href: '/payment',
         icon: Receipt
+    },
+    {
+        name: 'Tồn kho',
+        href: '/inventory-stock',
+        icon: Warehouse
     },
     {
         name: 'Hồ sơ',

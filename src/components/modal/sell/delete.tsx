@@ -7,9 +7,10 @@ import { useEffect } from "react"
 
 type Props = {
     sell: ISellResponse
+    refetch: () => void
 }
 
-const ConfirmDeleteSell = ({ sell }: Props) => {
+const ConfirmDeleteSell = ({ sell, refetch }: Props) => {
     const { mutateAsync, isSuccess, data } = useDeleteSell()
     const { toast } = useToast()
 
@@ -20,6 +21,8 @@ const ConfirmDeleteSell = ({ sell }: Props) => {
                 description: 'Cập nhật thành công',
                 variant: 'success',
             })
+
+            refetch()
         }
     }, [isSuccess, data])
 

@@ -60,8 +60,6 @@ export function DataTable<TData, TValue>({
     })
 
     useEffect(() => {
-        console.log("pagination", pagination)
-
         fetchData({
             take: pagination.pageSize,
             skip: (pagination.pageIndex * pagination.pageSize)

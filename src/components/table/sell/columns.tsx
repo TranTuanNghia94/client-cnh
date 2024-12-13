@@ -12,7 +12,9 @@ import { ArrowUpDown, MoreVertical } from "lucide-react"
 import moment from "moment"
 
 
-export const SellsColumns: ColumnDef<ISellResponse>[] = [
+export type ISellExtends = ISellResponse & { refetch: () => void }
+
+export const SellsColumns: ColumnDef<ISellExtends>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -233,7 +235,7 @@ export const SellsColumns: ColumnDef<ISellResponse>[] = [
                             <UpdateSellStatus sellData={item} />
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild className="text-red-600">
-                            <ConfirmDeleteSell sell={item} />
+                            <ConfirmDeleteSell sell={item} refetch={item?.refetch} />
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

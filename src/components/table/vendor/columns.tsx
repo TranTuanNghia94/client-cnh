@@ -7,7 +7,9 @@ import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreVertical } from "lucide-react"
 
 
-export const VendorColumns: ColumnDef<IVendorResponse>[] = [
+export type IVendorExtends = IVendorResponse & { refetch: () => void }  
+
+export const VendorColumns: ColumnDef<IVendorExtends>[] = [
     {
         id: 'No.',
         header: 'No.',
@@ -128,7 +130,7 @@ export const VendorColumns: ColumnDef<IVendorResponse>[] = [
                             </DropdownMenuItem>
                         </Link>
                         <DropdownMenuItem asChild className="text-red-600">
-                            <ConfirmDeleteVendor vendor={item} />
+                            <ConfirmDeleteVendor vendor={item} refetch={item?.refetch} />
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

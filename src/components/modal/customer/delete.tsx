@@ -7,9 +7,10 @@ import { useEffect } from "react"
 
 type Props = {
     customer: ICustomerResponse
+    refetch: () => void
 }
 
-const ConfirmDeleteCustomer = ({ customer }: Props) => {
+const ConfirmDeleteCustomer = ({ customer, refetch }: Props) => {
     const { mutateAsync, isSuccess, data } = useDeleteCustomer()
     const { toast } = useToast()
 
@@ -20,6 +21,8 @@ const ConfirmDeleteCustomer = ({ customer }: Props) => {
                 description: 'Cập nhật thành công',
                 variant: 'success',
             })
+            
+            refetch()
         }
     }, [isSuccess, data])
 

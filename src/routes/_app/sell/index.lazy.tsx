@@ -3,7 +3,7 @@ import { SellsColumns } from '@/components/table/sell/columns';
 import { Button } from '@/components/ui/button';
 import { useGetSells } from '@/hooks/use-sell';
 import { IPaginationAndSearch } from '@/types/api';
-import { ISellResponse, ISellWhere } from '@/types/sell';
+import { ISellWhere } from '@/types/sell';
 import { createLazyFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
 import { useMemo } from 'react';
 
@@ -26,7 +26,6 @@ function SellPage() {
         return (
             <div className='flex gap-2'>
                 <Button size="sm" variant="outline" onClick={() => navigate({ to: "/sell/new" })}>Tạo mới</Button>
-
                 <Button size="sm" variant="outline" onClick={() => navigate({ to: "/sell/upload" })}>Upload file</Button>
             </div>
         )
@@ -34,7 +33,11 @@ function SellPage() {
 
     return (
         <div>
-            <DataTable listTools={listTools} fetchData={(req) => queryAllSells(req as IPaginationAndSearch<ISellWhere>)} total={data?.metadata?.total} title='DANH SÁCH ĐƠN HÀNG' data={data?.results as ISellResponse[] || []} columns={SellsColumns} />
+            <DataTable listTools={listTools} 
+                fetchData={(req) => queryAllSells(req as IPaginationAndSearch<ISellWhere>)} 
+                total={data?.metadata?.total} title='DANH SÁCH ĐƠN HÀNG' 
+                data={data?.results?.map((item) => ({ ...item, refetch: queryAllSells })) || []} 
+                columns={SellsColumns} />
             <Outlet />
         </div>
     )

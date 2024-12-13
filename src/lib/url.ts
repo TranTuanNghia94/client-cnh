@@ -104,3 +104,11 @@ export const URL_GET_PAYMENT_REQUEST = 'de-nghi-thanh-toan';
 // System
 export const URL_SYS = 'system';
 export const URL_GET_ALL_ROLES = URL_SYS + '/role';
+
+
+
+
+// Inventory
+export const URL_INVENTORY = 'inventory';
+export const URL_GET_IMPORT_REQUEST = URL_INVENTORY + '/receiving';
+export const URL_GET_EXPORT_REQUEST = URL_INVENTORY + '/take-away';

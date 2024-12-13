@@ -1,7 +1,7 @@
 import { QUERIES } from "@/lib/constants"
-import { createManySells, createSell, deleteSell, deleteSellDetail, getAllSells, getSellIndex, updateSell, updateSellDetail } from "@/services/sell"
+import { createManySells, createSell, deleteSell, deleteSellDetail, getAllSells, getSellDetailByIds, getSellIndex, updateSell, updateSellDetail } from "@/services/sell"
 import { IPaginationAndSearch } from "@/types/api"
-import { ISellDetailInput, ISellInput, ISellRequest, ISellUpdate, ISellWhere } from "@/types/sell"
+import { ISellDetailInput, ISellDetailRequest, ISellInput, ISellRequest, ISellUpdate, ISellWhere } from "@/types/sell"
 import { useMutation } from "@tanstack/react-query"
 import { useToast } from "./use-toast"
 
@@ -16,11 +16,10 @@ export const useGetSells = () => {
                     CreatedBy: true,
                     KhachHang: true
                 },
-                ...payload,
-            }
-
-            if (payload?.orderBy) {
-                request.orderBy = payload.orderBy
+                where: payload?.search,
+                orderBy: payload?.orderBy,
+                take: payload?.take,
+                skip: payload?.skip,
             }
 
             return await getAllSells(request)
@@ -233,6 +232,44 @@ export const useCreateManySells = () => {
             }
 
             return await createManySells(request)
+        },
+        onError(error: Error) {
+            toast({
+                variant: "destructive",
+                title: "Có lỗi xảy ra",
+                description: error.message,
+            })
+        }
+    })
+
+    return mutation
+}
+
+export const useGetSellDetailByCodes = () => {
+    const { toast } = useToast()
+
+    const mutation = useMutation({
+        mutationKey: [QUERIES.GET_SELL_DETAIL],
+        mutationFn: async (ids: string[]) => {
+            const request: ISellDetailRequest = {
+                where: {
+                    DonHang: {
+                        orderNumber: {
+                            in: ids
+                        }
+                    }
+                },
+                include: {
+                    HangHoa: true,
+                    DonHang: {
+                        include: {
+                            KhachHang: true
+                        }
+                    }
+                }
+            }
+
+            return await getSellDetailByIds(request)
         },
         onError(error: Error) {
             toast({

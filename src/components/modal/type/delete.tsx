@@ -6,9 +6,10 @@ import { useEffect } from "react"
 
 type Props = {
     type: IGroupOfGoodsResponse
+    refetch: () => void
 }
 
-const ConfirmDeleteType = ({ type }: Props) => {
+const ConfirmDeleteType = ({ type, refetch }: Props) => {
     const { mutateAsync, isSuccess, data } = useDeleteType()
     const { toast } = useToast()
 
@@ -19,6 +20,8 @@ const ConfirmDeleteType = ({ type }: Props) => {
                 description: 'Cập nhật thành công',
                 variant: 'success',
             })
+
+            refetch()
         }
     }, [isSuccess, data])
 

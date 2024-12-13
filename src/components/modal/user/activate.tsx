@@ -8,9 +8,10 @@ import { useEffect } from "react"
 
 type Props = {
     user: IUserResponse
+    refetch: () => void
 }
 
-const ConfirmActivateUser = ({ user }: Props) => {
+const ConfirmActivateUser = ({ user, refetch }: Props) => {
     const { mutateAsync, isSuccess, data } = useDisableUser()
     const { toast } = useToast()
 
@@ -21,6 +22,8 @@ const ConfirmActivateUser = ({ user }: Props) => {
                 description: 'Cập nhật thành công',
                 variant: 'success',
             })
+
+            refetch()
         }
     }, [isSuccess, data])
 
@@ -28,7 +31,7 @@ const ConfirmActivateUser = ({ user }: Props) => {
     return (
         <AlertDialog>
             <AlertDialogTrigger asChild>
-                <div className={cn("relative hover:bg-red-500 hover:text-white flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", !user?.disabledAt ? "text-red-600" : "text-green-600")}>
+                <div className={cn("relative hover:text-white flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50", !user?.disabledAt ? "text-red-600 hover:bg-red-500" : "text-green-600 hover:bg-green-500")}>
                     {user?.disabledAt ? "Mở khoá" : "Khoá"}
                 </div>
             </AlertDialogTrigger>

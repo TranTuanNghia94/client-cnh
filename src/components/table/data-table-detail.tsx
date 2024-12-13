@@ -19,7 +19,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { Button } from "../ui/button"
-import React, { useMemo } from "react"
+import React, { useEffect, useMemo } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Pagination, PaginationContent, PaginationItem, PaginationLink } from "../ui/pagination"
 import { Separator } from "../ui/separator"
@@ -30,7 +30,8 @@ interface DataTableProps<TData, TValue> {
     data: TData[],
     listTools?: React.ReactNode,
     wrapperClassName?: string,
-    noDataText?: string | null
+    noDataText?: string | null,
+    rowSelect?: (rowSelection: Record<string, boolean>) => void
 }
 
 interface ColumnFilter {
@@ -46,18 +47,28 @@ export function DataTableDetail<TData, TValue>({
     data,
     listTools,
     wrapperClassName,
-    noDataText
+    noDataText,
+    rowSelect
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
+    const [rowSelection, setRowSelection] = React.useState({})
 
     const tableData = useMemo(() => data ?? [], [data]);
     const tableColumns = useMemo(() => columns ?? [], [columns]);
 
+
+    useEffect(() => {
+        if (rowSelect) {
+            rowSelect(rowSelection)
+        }
+    }, [rowSelection])
+
     const table = useReactTable({
         data: tableData ?? emptyArray,
         columns: tableColumns ?? emptyArray,
+        onRowSelectionChange: setRowSelection,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onSortingChange: setSorting,
@@ -71,6 +82,7 @@ export function DataTableDetail<TData, TValue>({
             sorting,
             columnFilters,
             columnVisibility,
+            rowSelection
         },
     })
 
@@ -82,35 +94,6 @@ export function DataTableDetail<TData, TValue>({
                         <div className="flex gap-x-2 justify-between">
                             <div className="gap-x-2 flex">
                                 {listTools}
-                                {/* <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="outline" className="ml-auto">
-                                            Columns <ChevronDown size={18} />
-                                        </Button>
-
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent align="end">
-                                        {table
-                                            .getAllColumns()
-                                            .filter(
-                                                (column) => column.getCanHide()
-                                            )
-                                            .map((column) => {
-                                                return (
-                                                    <DropdownMenuCheckboxItem
-                                                        key={column.id}
-                                                        className="capitalize"
-                                                        checked={column.getIsVisible()}
-                                                        onCheckedChange={(value) =>
-                                                            column.toggleVisibility(!!value)
-                                                        }
-                                                    >
-                                                        {column.id}
-                                                    </DropdownMenuCheckboxItem>
-                                                )
-                                            })}
-                                    </DropdownMenuContent>
-                                </DropdownMenu> */}
                             </div>
 
                             <div className="flex gap-x-2">

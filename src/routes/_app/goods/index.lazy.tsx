@@ -3,7 +3,7 @@ import { GoodsColumns } from '@/components/table/goods/columns'
 import { Button } from '@/components/ui/button'
 import { useGetGoods } from '@/hooks/use-goods'
 import { IPaginationAndSearch } from '@/types/api'
-import { IGoodsResponse, IGoodsWhere } from '@/types/goods'
+import { IGoodsWhere } from '@/types/goods'
 import { createLazyFileRoute, Outlet, useNavigate } from '@tanstack/react-router'
 import { useMemo } from 'react'
 
@@ -30,7 +30,11 @@ function GoodsPage() {
 
     return (
         <div>
-            <DataTable listTools={listTools} fetchData={(req) => queryAllTypes(req as IPaginationAndSearch<IGoodsWhere>)} total={data?.metadata?.total} title='DANH SÁCH HÀNG HOÁ' data={data?.results as IGoodsResponse[] || []} columns={GoodsColumns} />
+            <DataTable listTools={listTools} 
+                fetchData={(req) => queryAllTypes(req as IPaginationAndSearch<IGoodsWhere>)} 
+                total={data?.metadata?.total} title='DANH SÁCH HÀNG HOÁ' 
+                data={data?.results?.map((item) => ({ ...item, refetch: queryAllTypes })) || []} 
+                columns={GoodsColumns} />
             <Outlet />
         </div>
     )

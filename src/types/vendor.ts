@@ -1,9 +1,9 @@
 import { Prisma } from "./schema";
 
 
-export interface IQueryVendor extends Prisma.NhaCungCapSelect {}
+export type IQueryVendor = Prisma.NhaCungCapSelect
 
-export interface IVendorInput extends Prisma.NhaCungCapCreateInput {}
+export type IVendorInput = Prisma.NhaCungCapCreateInput
 
 export interface IVendorRequest {
 	select?: IQueryVendor;
@@ -15,7 +15,7 @@ export interface IVendorRequest {
 	data?: IVendorInput | Prisma.NhaCungCapUpdateInput;
 }
 
-export interface IVendorWhere extends Prisma.NhaCungCapWhereInput {}
+export type IVendorWhere = Prisma.NhaCungCapWhereInput
 
 export interface IVendorResponse {
 	metadata?: object | undefined;

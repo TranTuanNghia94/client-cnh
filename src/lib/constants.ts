@@ -54,6 +54,7 @@ export const QUERIES = {
 	UPDATE_SELL: 'update-sell',
 	UPDATE_SELL_DETAIL: 'update-sell-detail',
 	CREATE_MANY_SELL: 'create-many-sell',
+	GET_SELL_DETAIL: 'get-sell-detail',
 
 
 	// Purchase
@@ -63,7 +64,13 @@ export const QUERIES = {
 
 	// Payment
 	PAYMENT: 'payment',
-	
+
+
+
+	// Inventory
+	INVENTORY_STOCK: 'inventory-stock',
+	INVENTORY_OUT: 'inventory-out',
+	INVENTORY_IN: 'inventory-in',
 }
 
 export const LIST_ROLES = {
@@ -119,3 +126,6 @@ export const SELL_STATUS = {
 
 export const MAX_PAYLOAD_SIZE = 300;
 export const MAX_PAYLOAD_ORDER_SIZE = 5;
+
+
+export const EMAIL_REGEX = "@iesvietnam.com"

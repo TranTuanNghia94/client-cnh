@@ -6,7 +6,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { MoreVertical } from "lucide-react";
 
 
-type ICustomerAddressExtends = ICustomerAddressInput & {
+export type ICustomerAddressExtends = ICustomerAddressInput & {
     deleteRow: () => void
     updateRow: (val: ICustomerAddressInput) => void
 }
@@ -71,7 +71,7 @@ export const CustomerAddressColumns: ColumnDef<ICustomerAddressExtends>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem asChild className="text-blue-600">
-                            <UpdateCustomerAddress saveDetail={item?.updateRow} data={item}  />
+                            <UpdateCustomerAddress saveDetail={item?.updateRow} data={item} />
                         </DropdownMenuItem>
                         <DropdownMenuItem onClick={item?.deleteRow} className="text-red-600">Xoá</DropdownMenuItem>
                     </DropdownMenuContent>

@@ -1,6 +1,6 @@
 import HeaderPageLayout from '@/components/layout/HeaderPage'
 import CreateCustomerAddress from '@/components/modal/customer/customer-address-create'
-import { CustomerAddressColumns } from '@/components/table/customer/column-customer-address'
+import { CustomerAddressColumns, ICustomerAddressExtends } from '@/components/table/customer/column-customer-address'
 import { DataTableDetail } from '@/components/table/data-table-detail'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -195,8 +195,8 @@ function UpdateCustomerPage() {
                                                 updateRow: (val: ICustomerAddressInput) => handleUpdateCustomerAddress(index, val)
                                             }
                                         }
-                                    })}
-                                    columns={CustomerAddressColumns} 
+                                    }) as ICustomerAddressExtends[] || []}
+                                    columns={CustomerAddressColumns}
                                 />
                             </div>
                         </CardContent>

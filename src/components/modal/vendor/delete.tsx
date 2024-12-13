@@ -6,9 +6,10 @@ import { useEffect } from 'react'
 
 type Props = {
   vendor: IVendorResponse
+  refetch: () => void
 }
 
-const ConfirmDeleteVendor = ({ vendor }: Props) => {
+const ConfirmDeleteVendor = ({ vendor, refetch }: Props) => {
   const { mutateAsync, isSuccess, data } = useDeleteVendor()
   const { mutateAsync: getVendor } = useGetVendors()
   const { toast } = useToast()
@@ -21,6 +22,8 @@ const ConfirmDeleteVendor = ({ vendor }: Props) => {
         description: 'Cập nhật thành công',
         variant: 'success',
       })
+
+      refetch()
     }
   }, [isSuccess, data])
 
